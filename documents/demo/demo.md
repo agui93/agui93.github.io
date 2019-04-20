@@ -40,6 +40,6 @@ Having trouble with Pages? Check out our [documentation](https://agui93.github.i
 
 ### Img demo
 ![server 时序图]({{ site.baseurl }}/imgs/demo/server端启动过程时序.png)
-
+![server time](https://raw.githubusercontent.com/wiki/agui93/netty_annotation/images/server_sequence_diagram.png)
 ### Demo
 

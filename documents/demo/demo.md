@@ -38,10 +38,14 @@ Having trouble with Pages? Check out our [documentation](https://agui93.github.i
 
 
 
-### Img demo
-![server 时序图]({{ site.baseurl }}/imgs/demo/server端启动过程时序.png)
+- - -
+- - -
+- - - 
 
-## 分割线
+# 参考
+[Markdown one](http://xianbai.me/learn-md/article/about/readme.html)  
+[Markdown two](https://sspai.com/post/25137)
+
 - - -
 
 # 一级标题
@@ -92,6 +96,10 @@ demp三级标题
 
 * * *
 
+### Img demo
+![server 时序图]({{ site.baseurl }}/imgs/demo/server端启动过程时序.png)
+
+- - -
 
 ## 链接
 [github](https://www.github.com)
@@ -106,14 +114,67 @@ demp三级标题
 
 这里是普通
 
+- - -
+## 表格
+
+tabel test one
+
+name | age
+---  | ---
+LearnShare | 12
+Mike | 14  
+
+
+table test two
+
+|    name    | age |
+| ---------- | --- |
+| LearnShare |  12 |
+| Mike       |  32 |
+
+
+tabel test three;对齐
+
+| left | center | right |
+| :--- | :----: | ----: |
+| aaaa | bbbbbb | ccccc |
+| a    | b      | c     |
 
 
 
+table test four ;插入其他内容
 
+|     name     | age |             blog                |
+| ------------ | --- | ------------------------------- |
+| _LearnShare_ |  12 | [GitHub](https://www.github.com)|
+| __Mike__     |  32 | [GitHub](https://www.github.com)|
 
+- - -
 
+## TaskList
 
+- [ ] Eat
+- [x] Code
+  - [x] HTML
+  - [x] CSS
+  - [x] JavaScript
+- [ ] Sleep
 
+- - -
 
+## 代码块
+
+```
+code here
+
+```
+
+## 语法高亮
+
+```js
+window.addEventListener('load', function() {
+  console.log('window loaded');
+});
+```
 
 

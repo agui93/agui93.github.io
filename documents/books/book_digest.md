@@ -50,6 +50,7 @@
 - Redis设计与实现.pdf- Redis开发与运维完整版.pdf- Redis设计与实现.mobi- redis设计与实现(第二版).pdf
 
 ## Debug
+- debugging_-_the_9_indispensable_rules_for_finding_.pdf- 软件调试实战.pdf- Debug.Hacks中文版_深入调试的技术和工具.pdf- Django_1.1_Testing_and_Debugging.mobi- gdb-tutorial-handout.pdf- gdb.pdf- The-Art-of-Debugging.mobi
 
 ## Web 
 - Apache_-_Tomcat_7_-_2011_Aleksa_Vukotic__James_Goodwill_-_Apress.pdf- 深入理解Nginx_-_模块开发与架构解析.mobi- 深入理解Nginx：模块开发与架构解析（第2版）.epub- 深入剖析Tomcat中文版.pdf- 实战Nginx取代Apache的高性能Web服务器.pdf- 搜索引擎-原理_技术_系统.pdf- 图解网站分析.epub- How_Tomcat_Works.pdf- How_Tomcat_Workschinese.pdf- Tomcat_The_Definitive_Guide_2nd_Edition_Tomcat6.0.pdf- tomcat内核设计剖析.txt
@@ -91,8 +92,14 @@
 
 ## Security 
 
+
 ## Ops
+- openstack-cookbook.mobi- 系统运维全面解析技术管理与实践_-_韩晓光.mobi- 云计算架构技术与实践_第2版.pdf- Ansible_权威指南_-_李松涛.mobi- App后台开发运维和架构实践_-_曾健生.mobi- docker_practice.epub- Learning_Docker_Networking_-_2016.epub- Linux_运维最佳实践_-_胥峰.mobi- Manning.Docker.in.Action.2016.3.mobi- OpenStack_实战指南_-_黄凯.mobi- Openstack每天五分钟带目录20170417.pdf- OpenStack运维指南.pdf- SRE：Google运维解密.pdf- Tu_Jie_Fu_Wu_Qi_Duan_Wang_Luo_J_-_Ri__Gong_Tian_Kuan_Shi.mobi- Zabbix_企业级分布式监控系统_-_吴兆松.mobi
 
 ## Math
+- 概率论与数理统计陈希孺.pdf- [离散数学及其应用（英文第六版）].Discrete.Mathematics.and.its.Applications.pdf- 程序员的数学.pdf- 概率论沉思录.Probability.Theory---The.Logic.Of.Science.pdf- 概率论和数理统计.pdf- 概率论与数理统计 陈希孺.pdf- 概率论与数理统计陈希孺_387901658.pdf- 概率论与数理统计浙大_四版.pdf- 概率论与数理统计浙大版第四版教材.pdf- 概率论与数理统计浙江大学第四版-课后习题答案(完全版).pdf- 高等数理统计学 陈希孺 1999.pdf- 解题成长快乐陶哲轩教你学数学.pdf- 具体数学（中文版）（计算机科学基础）.pdf- 深度学习.mobi- 什么是数学-626a.mobi- 什么是数学.mobi- 通信的数学理论.pdf- 统计学的世界（第五版）.pdf- 图灵数学统计学丛书26-陶哲轩实分析-澳陶哲轩-王昆扬译-人民邮电出版社-2008.pdf- 线性代数应该这样学Liner-Algebra-Done-Right(中文).pdf- Deep_Learning深度学习中文版.pdf- HighlightsOfCalculus- INSTRUCTOR’S SOLUTIONS MANUAL.pdf- Morris H DeGroot_ Mark J Schervish-Probability and statistics-Pearson Education  (2012) (1).pdf- Tensorflow_实战Google深度学习框架.pdf- Tensorflow_实战Google深度学习框架的副本.pdf
 
-## Tools
+## Tools- 正则指引.pdf- 重构--改善既有代码的设计.mobi- 重新定义团队：谷歌如何工作-（美）博克.mobi- Git团队协作.epub- Git团队协作.mobi- GitHub入门与实践原版.pdf- Practical Vim.pdf- vimbook-OPL.pdf
+
+# Others
+- Unity3D_网络游戏实战_-_罗培羽.mobi- 游戏脚本高级编程 源码- Unity_3D_脚本编程_-_使用_C_语言开发跨平台游戏_-_陈嘉栋.mobi- Unity_游戏开发入门经典_-_Mike_Geig.epub- Unity_游戏开发入门经典_-_Mike_Geig.mobi- Unity3D_网络游戏实战_-_罗培羽.epub- Unity游戏案例开发大全精品.epub

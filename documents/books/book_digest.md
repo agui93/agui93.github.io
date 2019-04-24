@@ -1,6 +1,6 @@
 - 目录
 {:toc #markdown-toc}	
-# 摘要
+# 电子书摘要
 ```
 个人已经下载收集的书籍
 ```
@@ -18,6 +18,8 @@
 
 
 ## OS
+- linux_system_programming_2nd_edition.pdf- 鸟哥的私房菜基础第4版.pdf- 鸟哥的Linux私房菜-基础篇第四版.pdf- 鸟哥的Linux私房菜.基础学习篇-第三版.mobi- 鸟哥的Linux私房菜服务器架设篇(第三版).pdf- 鸟哥的Linux私房菜基础篇第三版.pdf- 深入分析Linux内核源码.pdf- Linux_环境编程_-_从应用到内核_-_高峰.epub- linux_system_programming_2nd_edition的副本.pdf- Linux-C编程一站式学习2.pdf- Linux高性能服务器编程.pdf- Linux环境编程从应用到内核_Linux-Unix技术丛书.mobi- Linux内核设计与实现(第三版中文高清带目录).pdf- Linux内核完全注释.pdf- Linux网络编程.pdf- Linux网络编程第二版.txt- mastering_cmake.pdf- shell.pdf- UNIX-Linux+系统管理技术手册(第四版).pdf
+- UNIX_网络编程_卷_1_-_套接字联网_API_第3版.epub- UNIX_网络编程_卷2_-_W._Richard_Stevens.pdf- UNIX环境高级编程第三版_扫描版.pdf- UNIX网络编程-卷2_进程间通信-第2版.mobi- UNIX网络编程卷1_套接字联网API第3版.mobi- UNIX网络编程卷1第3版.pdf
 
 ## Network
 
@@ -27,6 +29,11 @@
 ## Data Structure and Algorithms
 
 ## Database
+- Couchbase 介绍及实战 DTCC2014.zip- Couchbase 介绍及实战 DTCC2014
+- Hadoop-The.Definitive.Guide_4.edition_a_Tom.White_April-2015.pdf
+- 大数据存储MongoDB实战指南.pdf- 深入理解计算机网络-王达.epub- 深入学习_MongoDB_-_Kristina_Chodorow.mobi- 深入学习MongoDB].(霍多罗夫).巨成等.扫描版.pdf- MongoDB_in_Action.pdf- MongoDB权威指南（第二版）.mobi- MongoDB实战_电子书.pdf- MongoDBQ权威指南第二版.pdf
+- 《MySQL技术内幕：SQL编程》（姜承尧）.pdf- mysql技术内幕-SQL编程.pdf
+- Redis设计与实现.pdf- Redis开发与运维完整版.pdf- Redis设计与实现.mobi- redis设计与实现(第二版).pdf
 
 ## Debug
 
@@ -39,18 +46,12 @@
    - [https://www.codecademy.com/learn/all](https://www.codecademy.com/learn/all)
 - Manning.jQuery.in.Action.2nd.Edition.Jun.2010.pdf- jQuery.pdf
 
-## Security 
-
-## Ops
-
-## Math
-
-## Tools
 
 ## C 
 - C陷阱与缺陷.pdf- [C.Primer.Plus(6th,2013.12)].Stephen.Prata.pdf- C_Primer_Plus_5th.mobi- C标准库.pdf- c标准库英文版.pdf- C程序设计语言--第2版.pdf- C和指针(第二版)高清全版469页.pdf- C语言参考手册第五版_英文版.pdf- C语言参考手册原书第5版pdf- C语言程序设计现代方法1.pdf- C专家编程.pdf- the_c_programming_language_2.pdf- the_c_programming_language2nd_edition.pdf- Think-C_v1.09.pdf
 
 ## C++
+- C++Primer中文版第5版.pdf- C_Primer_Plus第6版中文版.mobi- C_Primer_Plus第6版中文版.pdf- C++ Primer Plus中文版第5版.pdf- c++hwo_to_program第9版.pdf- c++primer第五版.pdf- Deitel & Deitel C++ How To Program.pdf- STL源码剖析简体中文完整版清晰扫描带目录.pdf- ThinkingInCPlusPlusVolumeOne.pdf- ThinkingInCPlusPlusVolumeTwo.pdf
 
 ## Go
 
@@ -59,3 +60,11 @@
 ## Python
 
 - 深度学习入门基于Python的理论与实现.pdf- Python神经网络编程异步图书_39656452.mobi
+
+## Security 
+
+## Ops
+
+## Math
+
+## Tools

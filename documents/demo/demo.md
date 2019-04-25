@@ -178,4 +178,7 @@ window.addEventListener('load', function() {
 });
 ```
 
+## 流程图
 
+## vim
+[vim demo]({{ site.baseurl }}/documents/demo/vimdemo)

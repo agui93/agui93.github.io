@@ -217,6 +217,37 @@ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 ```
 
 ## 快捷键
+```
+let mapleader=";"
+inoremap <Leader>jk <esc>
+nmap LB 0
+nmap LE $
+vnoremap <Leader>y "+y
+nmap <Leader>p "+p
+nmap <Leader>q :q<CR>
+nmap <Leader>w :w<CR>
+nmap <Leader>WQ :wa<CR>:q<CR>
+nmap <Leader>Q :qa!<CR>
+nnoremap nw <C-W><C-W>
+nnoremap <Leader>lw <C-W>l
+nnoremap <Leader>hw <C-W>h
+nnoremap <Leader>kw <C-W>k
+nnoremap <Leader>jw <C-W>j
+nmap <Leader>M %
+map <silent> <F10> :call ToggleFullscreen()<CR>
+"nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+nmap <silent> <Leader>sw :FSHere<cr>
+map <Leader>bl :MBEToggle<cr>
+map <Leader>el :MBEbn<cr>
+map <Leader>eh :MBEbp<cr>
+nmap <Leader>fl :NERDTreeToggle<CR>
+nnoremap <Leader>ilt :TagbarToggle<CR> 
+inoremap <leader>; <C-x><C-o>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+
+```
+
 
 ## 构建docker
 ```
@@ -242,6 +273,7 @@ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
  
  
 ``` 
+
 
 
 

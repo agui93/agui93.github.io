@@ -1,4 +1,4 @@
-##vim demo one in docker
+##vimrc demo one in docker
 ```
 let mapleader=";"
 inoremap <Leader>jk <esc>
@@ -215,3 +215,33 @@ let g:ycm_seed_identifiers_with_syntax=1
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 ```
+
+## 快捷键
+
+## 构建docker
+```
+ docker run -it -d --name ubuntu16_vim --cap-add=SYS_PTRACE --security-opt seccomp=unconfined ubuntu:16.04 /bin/bash
+ 
+ docker exec -it ubuntu16_vim /bin/bash
+ 
+ apt-get update
+ apt-get install gdb git make g++ gcc build-essential cmake python3-dev ctags vim
+
+ 
+ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 
+ 	
+ cd ~/.vim/bundle/YouCompleteMe/
+ python3 install.py --clang-completer
+ python3 install.py --clangd-completer
+ 
+ 
+ 项目demo
+ git clone https://github.com/antirez/redis.git
+ cd redis
+ make
+ 
+ 
+``` 
+
+
+

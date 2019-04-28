@@ -275,5 +275,7 @@ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 ``` 
 
 
+## Todo
+c语言自动提示和补全 代码自动跳转 多文档编辑
 
 

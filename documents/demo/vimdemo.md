@@ -268,6 +268,7 @@ RUN /root/vim_plugins_install.sh
 
 vim_plugins_install.sh
 ```
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # 安装vim插件
 vim -c PluginInstall -c q -c q
 
@@ -293,5 +294,12 @@ vim调试项目
 
 ## Todo
 共享文件夹 c语言自动提示和补全 代码自动跳转 多文档编辑
+
+## Reference
+[YouCompleteMe](https://github.com/Valloric/YouCompleteMe)    
+[use_vim_as_ide](https://github.com/yangyangwithgnu/use_vim_as_ide)      
+[http://www.skywind.me/blog/archives/2084](http://www.skywind.me/blog/archives/2084)     
+
+
 
 

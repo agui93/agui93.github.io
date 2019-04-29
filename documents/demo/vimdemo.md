@@ -1,4 +1,4 @@
-##vimrc demo one in docker
+##vimrc 
 ```
 let mapleader=";"
 inoremap <Leader>jk <esc>
@@ -249,33 +249,49 @@ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 ```
 
 
-## 构建docker
-```
- docker run -it -d --name ubuntu16_vim --cap-add=SYS_PTRACE --security-opt seccomp=unconfined ubuntu:16.04 /bin/bash
- 
- docker exec -it ubuntu16_vim /bin/bash
- 
- apt-get update
- apt-get install gdb git make g++ gcc build-essential cmake python3-dev ctags vim
+## 构建docker  
+├── Dockerfile  
+├── vim_plugins_install.sh  
+└── vimrc  
 
+Dockerfile
+```
+From ubuntu:16.04
+RUN apt-get update && apt-get install -y gdb git make g++ gcc build-essential cmake python3-dev ctags vim
+
+
+ADD ./vimrc /root/.vimrc
+ADD ./vim_plugins_install.sh /root/vim_plugins_install.sh
+RUN ["chmod", "+x", "/root/vim_plugins_install.sh"]
+RUN /root/vim_plugins_install.sh
+```
+
+vim_plugins_install.sh
+```
+# 安装vim插件
+vim -c PluginInstall -c q -c q
+
+# 安装插件运行需要依赖的一些组件
+cd /root/.vim/bundle/YouCompleteMe/ && python3 install.py --clang-complete &&  python3 install.py --clangd-completer
+```
+
+命令
+```
+构建镜像
+docker build -t agui/demovim .
+运行容器
+docker run -it -d --name demovimtest --cap-add=SYS_PTRACE --security-opt seccomp=unconfined agui/demovim /bin/bash
+进入容器
+docker exec -it demovimtest /bin/bash
  
- git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 
- 	
- cd ~/.vim/bundle/YouCompleteMe/
- python3 install.py --clang-completer
- python3 install.py --clangd-completer
- 
- 
- 项目demo
- git clone https://github.com/antirez/redis.git
- cd redis
- make
- 
- 
+vim调试项目
+  git clone https://github.com/antirez/redis.git
+  cd redis
+  make   
 ``` 
 
 
 ## Todo
-c语言自动提示和补全 代码自动跳转 多文档编辑
+共享文件夹 c语言自动提示和补全 代码自动跳转 多文档编辑
 
 

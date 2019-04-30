@@ -258,7 +258,7 @@ Dockerfile
 ```
 From ubuntu:16.04
 RUN apt-get update && apt-get install -y gdb git make g++ gcc build-essential cmake python3-dev ctags vim
-
+RUN apt-get install -y clang
 
 ADD ./vimrc /root/.vimrc
 ADD ./vim_plugins_install.sh /root/vim_plugins_install.sh
@@ -273,7 +273,8 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim -c PluginInstall -c q -c q
 
 # 安装插件运行需要依赖的一些组件
-cd /root/.vim/bundle/YouCompleteMe/ && python3 install.py --clang-complete &&  python3 install.py --clangd-completer
+#cd /root/.vim/bundle/YouCompleteMe/ && python3 install.py --clang-complete &&  python3 install.py --clangd-completer
+cd /root/.vim/bundle/YouCompleteMe/ && python3 install.py --clang-complete
 ```
 
 命令
@@ -282,6 +283,8 @@ cd /root/.vim/bundle/YouCompleteMe/ && python3 install.py --clang-complete &&  p
 docker build -t agui/demovim .
 运行容器
 docker run -it -d --name demovimtest --cap-add=SYS_PTRACE --security-opt seccomp=unconfined agui/demovim /bin/bash
+
+docker run -it --name aguivim -d -v ~/agui/github/linux-network:/home/linux-network --cap-add=SYS_PTRACE --security-opt seccomp=unconfined agui/demovim /bin/bash
 进入容器
 docker exec -it demovimtest /bin/bash
  
@@ -299,7 +302,7 @@ vim调试项目
 [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)    
 [use_vim_as_ide](https://github.com/yangyangwithgnu/use_vim_as_ide)      
 [http://www.skywind.me/blog/archives/2084](http://www.skywind.me/blog/archives/2084)     
-
+[http://vim.zhangjikai.com/%E6%8F%92%E4%BB%B6/vundle.html](http://vim.zhangjikai.com/%E6%8F%92%E4%BB%B6/vundle.html)
 
 
 

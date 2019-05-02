@@ -10,27 +10,16 @@ nmap LB 0
 nmap LE $
 
 vnoremap <Leader>y "+y
-
 nmap <Leader>p "+p
-
 nmap <Leader>q :q<CR>
-
 nmap <Leader>w :w<CR>
-
 nmap <Leader>WQ :wa<CR>:q<CR>
-
 nmap <Leader>Q :qa!<CR>
-
 nnoremap nw <C-W><C-W>
-
 nnoremap <Leader>lw <C-W>l
-
 nnoremap <Leader>hw <C-W>h
-
 nnoremap <Leader>kw <C-W>k
-
 nnoremap <Leader>jw <C-W>j
-
 nmap <Leader>M %
 
 
@@ -39,17 +28,18 @@ autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 
 set incsearch
-
 set ignorecase
-
 set nocompatible
-
 set wildmenu
 
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin() 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'chxuan/change-colorscheme'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -60,13 +50,30 @@ Plugin 'majutsushi/tagbar'
 Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-scripts/DfrankUtil'
 Plugin 'vim-scripts/vimprj'
-Plugin 'Valloric/YouCompleteMe'
 call vundle#end() 
 filetype plugin indent on
 
 
+" 主题
 set background=dark
-colorscheme default
+let g:onedark_termcolors=256
+"colorscheme onedark
+
+" airline
+let g:airline_theme="onedark"
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '>'
+let g:airline_left_alt_sep = '>>'
+let g:airline_right_sep = '<'
+let g:airline_right_alt_sep = '<<'
+
+
+
+
 
 
 set gcr=a:block-blinkon0
@@ -88,14 +95,10 @@ map <silent> <F10> :call ToggleFullscreen()<CR>
 autocmd VimEnter * call ToggleFullscreen()
 
 set laststatus=2
-
 set ruler
-
 set number
-
 set cursorline
 set cursorcolumn
-
 set hlsearch
 
 
@@ -103,19 +106,14 @@ set hlsearch
 set nowrap
 
 syntax enable
-
 syntax on
 syntax keyword cppSTLtype initializer_list
 
 
 filetype indent on
-
 set expandtab
-
 set tabstop=4
-
 set shiftwidth=4
-
 set softtabstop=4
 
 
@@ -140,11 +138,12 @@ set nofoldenable
 nmap <silent> <Leader>sw :FSHere<cr>
 
 
-
+"MiniBufExplorer
 map <Leader>bl :MBEToggle<cr>
 map <Leader>el :MBEbn<cr>
 map <Leader>eh :MBEbp<cr>
 
+"NERDTree
 nmap <Leader>fl :NERDTreeToggle<CR>
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
@@ -157,7 +156,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 autocmd vimenter * NERDTree
 
 
-
+"tagbar
 let tagbar_left=0 
 nnoremap <Leader>ilt :TagbarToggle<CR> 
 let tagbar_width=32 
@@ -195,13 +194,11 @@ let g:tagbar_type_cpp = {
          \ 'union'     : 'u'
      \ }
      \ }
-
-
 let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
 
 
 
-
+"YCM配置
 highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
 highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
 let g:ycm_complete_in_comments=1
@@ -213,6 +210,7 @@ let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_key_invoke_completion = '<c-z>' " 主动调用补全
 
 ```
 

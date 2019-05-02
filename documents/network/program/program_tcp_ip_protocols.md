@@ -13,6 +13,9 @@ Todo :每个层次的解释
 
 ## 主机到网络层的协议
 
+![osi参考模型和tcp/ip参考模型的对照]({{ site.baseurl }}/imgs/network/program/host_to_netlayer_protocol.png)
+
+
 ## IP协议
 
 ## 网际控制报文协议ICMP

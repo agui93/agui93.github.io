@@ -18,3 +18,7 @@
 - [运行时环境]({{ site.baseurl }}/documents/notes/pointers_on_c/c_run_env)
 
 
+## Java并发编程的艺术
+- [并发编程的挑战]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_challenge)
+- [Java并发编程的底层实现原理]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_underlying_implementation_principle)
+

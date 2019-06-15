@@ -21,4 +21,5 @@
 ## Java并发编程的艺术
 - [并发编程的挑战]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_challenge)
 - [Java并发编程的底层实现原理]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_underlying_implementation_principle)
+- [Java中的锁]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_lock)
 

@@ -1,4 +1,9 @@
-## C和指针(POINTERS ON C)
+- 目录
+{:toc #markdown-toc}	
+
+# 笔记
+
+## POINTERS ON C
 - [基本]({{ site.baseurl }}/documents/notes/pointers_on_c/c_basics)
 - [数据]({{ site.baseurl }}/documents/notes/pointers_on_c/c_data)
 - [语句]({{ site.baseurl }}/documents/notes/pointers_on_c/c_statement)
@@ -23,3 +28,8 @@
 - [Java并发编程的底层实现原理]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_underlying_implementation_principle)
 - [Java中的锁]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_lock)
 
+
+
+## myself
+- [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
+- [java AbstractQueuedSynchronizer 分析(未翻译)]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_analyze_AbstractQueuedSynchronizer)

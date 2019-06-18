@@ -19,3 +19,12 @@ http://www.cs.umd.edu/~pugh/java/memoryModel/
 
 The "Double-Checked Locking is Broken" Declaration
 http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+
+
+Thread Object两个类中，关于线程的解释
+synchronize volatile的解释
+
+
+
+
+

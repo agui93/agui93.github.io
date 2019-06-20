@@ -31,8 +31,9 @@
 
 
 ## myself
-- [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
+- [java unsafe 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
 - [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
+- [java wait notivication 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_wait_notification) 
 - [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)
 - [java AbstractQueuedSynchronizer 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_analyze_AbstractQueuedSynchronizer)
 - [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)

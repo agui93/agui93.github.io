@@ -35,7 +35,7 @@ The {park} method is designed for use only in constructions of the form:
 <pre> {while (!canProceed()) { ... LockSupport.park(this); }}</pre>
 where neither {canProceed} nor any other actions prior to the call to {park} entail locking or blocking.  Because only one permit is associated with each thread, any intermediary uses of {park} could interfere with its intended effects.
 
-{park}方法使用循环形式，原因是每个线程只有一个许可，而{park}方法可能无故退出阻塞。
+使用{park}方法时常用循环形式，原因是每个线程只有一个许可，而{park}方法可能无故退出阻塞。
 
 
 
@@ -72,11 +72,11 @@ Makes available the permit for the given thread, if it was not already available
 
 ## SAMPLE USAGE
 Here is a sketch of a first-in-first-out non-reentrant lock class:
- <pre> {
+
+```
   class FIFOMutex {
     private final AtomicBoolean locked = new AtomicBoolean(false);
-    private final Queue<Thread> waiters
-      = new ConcurrentLinkedQueue<Thread>();
+    private final Queue<Thread> waiters = new ConcurrentLinkedQueue<Thread>();
     public void lock() {
       boolean wasInterrupted = false;
       Thread current = Thread.currentThread();
@@ -96,11 +96,11 @@ Here is a sketch of a first-in-first-out non-reentrant lock class:
       locked.set(false);
       LockSupport.unpark(waiters.peek());
     }
-  }}
-  </pre>
+  }
+```
 
-
-
+## 用例
+AbstractQueuedSynchronizer中使用LockSupport进行线程的阻塞和唤醒
 
 
 

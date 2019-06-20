@@ -99,3 +99,29 @@ Similarly, notifications cannot be lost due to interrupts. Assume that a set s o
 - all of the threads in s must exit wait by throwing InterruptedException
 
 Note that if a thread is both interrupted and woken via notify, and that thread returns from wait by throwing an InterruptedException, then some other thread in the wait set must be notified.
+
+
+## Methods
+
+**public final native void wait(long timeout) throws InterruptedException;**
+
+**public final void wait(long timeout, int nanos) throws InterruptedException**
+
+**public final void wait() throws InterruptedException**
+
+**public final native void notify();**
+
+**public final native void notifyAll();**
+
+**public void interrupt()**
+
+**public static boolean interrupted()**
+
+**public boolean isInterrupted()**
+
+
+
+
+
+
+

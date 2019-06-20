@@ -226,7 +226,7 @@ getState, setState, and compareAndSetState
 operations to access and update this state. These methods in turn
 rely on java.util.concurrent.atomic support providing JSR133
 (Java Memory Model) compliant volatile semantics on reads
-and writes, and access to native compare-and-swap or loadlinked/store-conditional instructions to implement compareAndSetState, that atomically sets state to a given new value
+and writes, and access to native compare-and-swap or load-linked/store-conditional instructions to implement compareAndSetState, that atomically sets state to a given new value
 only if it holds a given expected value.
 
 Restricting synchronization state to a 32bit int was a pragmatic
@@ -291,8 +291,255 @@ support — interrupting a thread unparks it.
 
 ### Queues
 
+The heart of the framework is maintenance of queues of blocked
+threads, which are restricted here to FIFO queues. Thus, the
+framework does not support priority-based synchronization.
+
+These days, there is little controversy that the most appropriate
+choices for synchronization queues are non-blocking data
+structures that do not themselves need to be constructed using
+lower-level locks. And of these, there are two main candidates:
+variants of Mellor-Crummey and Scott (MCS) locks [9], and
+variants of Craig, Landin, and Hagersten (CLH) locks [5][8][10].
+Historically, CLH locks have been used only in spinlocks.
+However, they appeared more amenable than MCS for use in the
+synchronizer framework because they are more easily adapted to
+handle cancellation and timeouts, so were chosen as a basis. The
+resulting design is far enough removed from the original CLH
+structure to require explanation.
+
+
+A CLH queue is not very queue-like, because its enqueuing and
+dequeuing operations are intimately tied to its uses as a lock. It is
+a linked queue accessed via two atomically updatable fields,
+head and tail, both initially pointing to a dummy node.
+
+A new node, node, is enqueued using an atomic operation:
+```
+do { pred = tail;
+} while(!tail.compareAndSet(pred, node));
+```
+
+The release status for each node is kept in its predecessor node.
+So, the "spin" of a spinlock looks like:
+```
+while (pred.status != RELEASED) ; // spin
+```
+
+A dequeue operation after this spin simply entails setting the
+head field to the node that just got the lock:
+head = node;
+
+Among the advantages of CLH locks are that enqueuing and
+dequeuing are fast, lock-free, and obstruction free (even under
+contention, one thread will always win an insertion race so will
+make progress); that detecting whether any threads are waiting is
+also fast (just check if head is the same as tail); and that
+release status is decentralized, avoiding some memory
+contention.
+
+
+In the original versions of CLH locks, there were not even links
+connecting nodes. In a spinlock, the pred variable can be held
+as a local. However, Scott and Scherer[10] showed that by
+explicitly maintaining predecessor fields within nodes, CLH
+locks can deal with timeouts and other forms of cancellation: If a
+node's predecessor cancels, the node can slide up to use the
+previous node's status field.
+
+The main additional modification needed to use CLH queues for
+blocking synchronizers is to provide an efficient way for one
+node to locate its successor. In spinlocks, a node need only
+change its status, which will be noticed on next spin by its
+successor, so links are unnecessary. But in a blocking
+synchronizer, a node needs to explicitly wake up (unpark) its
+successor.
+
+An AbstractQueuedSynchronizer queue node contains a
+next link to its successor. But because there are no applicable
+techniques for lock-free atomic insertion of double-linked list
+nodes using compareAndSet, this link is not atomically set as
+part of insertion; it is simply assigned:<br/>
+**pred.next = node;**<br/>
+after the insertion.This is reflected in all usages. The next link
+is treated only as an optimized path. If a node's successor does
+not appear to exist (or appears to be cancelled) via its next field,
+it is always possible to start at the tail of the list and traverse
+backwards using the pred field to accurately check if there
+really is one.
+
+
+
+A second set of modifications is to use the status field kept in
+each node for purposes of controlling blocking, not spinning. In
+the synchronizer framework, a queued thread can only return
+from an acquire operation if it passes the tryAcquire method
+defined in a concrete subclass; a single "released" bit does not
+suffice. But control is still needed to ensure that an active thread
+is only allowed to invoke tryAcquire when it is at the head of
+the queue; in which case it may fail to acquire, and (re)block.
+This does not require a per-node status flag because permission
+can be determined by checking that the current node's
+predecessor is the head. And unlike the case of spinlocks, there
+is not enough memory contention reading head to warrant
+replication. However, cancellation status must still be present in
+the status field.
+
+
+
+The queue node status field is also used to avoid needless calls to
+park and unpark. While these methods are relatively fast as
+blocking primitives go, they encounter avoidable overhead in the
+boundary crossing between Java and the JVM runtime and/or OS.
+Before invoking park, a thread sets a "signal me" bit, and then
+rechecks synchronization and node status once more before
+invoking park. A releasing thread clears status. This saves
+threads from needlessly attempting to block often enough to be
+worthwhile, especially for lock classes in which lost time waiting
+for the next eligible thread to acquire a lock accentuates other
+contention effects. This also avoids requiring a releasing thread
+to determine its successor unless the successor has set the signal
+bit, which in turn eliminates those cases where it must traverse
+multiple nodes to cope with an apparently null next field unless
+signalling occurs in conjunction with cancellation.
+
+
+Perhaps the main difference between the variant of CLH locks
+used in the synchronizer framework and those employed in other
+languages is that garbage collection is relied on for managing
+storage reclamation of nodes, which avoids complexity and
+overhead. However, reliance on GC does still entail nulling of
+link fields when they are sure to never to be needed. This can
+normally be done when dequeuing. Otherwise, unused nodes
+would still be reachable, causing them to be uncollectable.
+
+
+Some further minor tunings, including lazy initialization of the
+initial dummy node required by CLH queues upon first
+contention, are described in the source code documentation in the
+J2SE1.5 release.
+
+
+Omitting such details, the general form of the resulting
+implementation of the basic acquire operation (exclusive,
+noninterruptible, untimed case only) is:
+
+```
+if (!tryAcquire(arg)) {
+node = create and enqueue new node;
+pred = node's effective predecessor;
+while (pred is not head node || !tryAcquire(arg)) {
+if (pred's signal bit is set)
+park();
+else
+compareAndSet pred's signal bit to true;
+pred = node's effective predecessor;
+}
+head = node;
+}
+
+And the release operation is:
+
+if (tryRelease(arg) && head node's signal bit is set) {
+compareAndSet head's signal bit to false;
+unpark head's successor, if one exists
+}
+```
+The number of iterations of the main acquire loop depends, of
+course, on the nature of tryAcquire. Otherwise, in the
+absence of cancellation, each component of acquire and release is
+a constant-time O(1) operation, amortized across threads,
+disregarding any OS thread scheduling occuring within park.
+
+Cancellation support mainly entails checking for interrupt or
+timeout upon each return from park inside the acquire loop. A
+cancelled thread due to timeout or interrupt sets its node status
+and unparks its successor so it may reset links. With cancellation,
+determining predecessors and successors and resetting status may
+include O(n) traversals (where n is the length of the queue).
+Because a thread never again blocks for a cancelled operation,
+links and status fields tend to restabilize quickly.
+
+
+
+
+
+
 ### Condition Queues
 
+The synchronizer framework provides a ConditionObject
+class for use by synchronizers that maintain exclusive
+synchronization and conform to the Lock interface. Any number
+of condition objects may be attached to a lock object, providing
+classic monitor-style await, signal, and signalAll
+operations, including those with timeouts, along with some
+inspection and monitoring methods.
+
+
+The ConditionObject class enables conditions to be
+efficiently integrated with other synchronization operations,
+again by fixing some design decisions. This class supports only
+Java-style monitor access rules in which condition operations are
+legal only when the lock owning the condition is held by the
+current thread (See [4] for discussion of alternatives). Thus, a
+ConditionObject attached to a ReentrantLock acts in
+the same way as do built-in monitors (via Object.wait etc),
+differing only in method names, extra functionality, and the fact
+that users can declare multiple conditions per lock.
+
+A ConditionObject uses the same internal queue nodes as
+synchronizers, but maintains them on a separate condition queue.
+The signal operation is implemented as a queue transfer from the
+condition queue to the lock queue, without necessarily waking up
+the signalled thread before it has re-acquired its lock.
+
+The basic await operation is:
+```
+create and add new node to condition queue;
+ release lock;
+ block until node is on lock queue;
+ re-acquire lock;
+And the signal operation is:
+ transfer the first node from condition queue to lock queue;
+```
+
+Because these operations are performed only when the lock is
+held, they can use sequential linked queue operations (using a
+nextWaiter field in nodes) to maintain the condition queue.
+The transfer operation simply unlinks the first node from the
+condition queue, and then uses CLH insertion to attach it to the
+lock queue.
+
+
+The main complication in implementing these operations is
+dealing with cancellation of condition waits due to timeouts or
+Thread.interrupt. A cancellation and signal occuring at
+approximately the same time encounter a race whose outcome
+conforms to the specifications for built-in monitors. As revised in
+JSR133, these require that if an interrupt occurs before a signal,
+then the await method must, after re-acquiring the lock, throw
+InterruptedException. But if it is interrupted after a
+signal, then the method must return without throwing an
+exception, but with its thread interrupt status set.
+
+
+To maintain proper ordering, a bit in the queue node status
+records whether the node has been (or is in the process of being)
+transferred. Both the signalling code and the cancelling code try
+to compareAndSet this status. If a signal operation loses this race,
+it instead transfers the next node on the queue, if one exists. If a
+cancellation loses, it must abort the transfer, and then await lock
+re-acquisition. This latter case introduces a potentially
+unbounded spin. A cancelled wait cannot commence lock reacquisition until the node has been successfully inserted on the lock queue, so must spin waiting for the CLH queue insertion
+compareAndSet being performed by the signalling thread to
+succeed. The need to spin here is rare, and employs a
+Thread.yield to provide a scheduling hint that some other
+thread, ideally the one doing the signal, should instead run. While
+it would be possible to implement here a helping strategy for the
+cancellation to insert the node, the case is much too rare to justify
+the added overhead that this would entail. In all other cases, the
+basic mechanics here and elsewhere use no spins or yields, which
+maintains reasonable performance on uniprocessors.
 
 ## USAGE
 

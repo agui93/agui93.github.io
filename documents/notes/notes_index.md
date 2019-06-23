@@ -3,6 +3,18 @@
 
 # 笔记
 
+
+## myself
+- [java unsafe 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
+- [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
+- [java wait notivication 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_wait_notification) 
+- [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)
+- [The java.util.concurrent Synchronizer Framework 论文]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_AbstractQueuedSynchronizer_paper)
+- [java AbstractQueuedSynchronizer 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_analyze_AbstractQueuedSynchronizer)
+- [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)
+
+
+
 ## POINTERS ON C
 - [基本]({{ site.baseurl }}/documents/notes/pointers_on_c/c_basics)
 - [数据]({{ site.baseurl }}/documents/notes/pointers_on_c/c_data)
@@ -30,11 +42,3 @@
 
 
 
-## myself
-- [java unsafe 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
-- [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
-- [java wait notivication 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_wait_notification) 
-- [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)
-- [The java.util.concurrent Synchronizer Framework 论文]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_AbstractQueuedSynchronizer_paper)
-- [java AbstractQueuedSynchronizer 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_analyze_AbstractQueuedSynchronizer)
-- [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)

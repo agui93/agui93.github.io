@@ -137,7 +137,6 @@ Java内置锁(通过关键字synchronized的方法和代码块)一直有性能�
 而且，这类工作的主要关注点是最小化空间开销和最小化单处理器下单个线程上下文切换的时间开销。对于synchronizers来说，这些并不是特别重要的关注点：程序人员只在需要时构造synchronizers，因此不会使用紧缩空间，否则会造成空间浪费；synchronizers经常使用独占方式在多线程设计(特别是多处理器)中，这样的场景中出现的是偶然竞争情况。所以，常用的优化锁的JVM策略主要是针对zero-contention情况，对于比较依赖java.util.concurrent包的典型多线程服务应用而言，leaving other cases to less predictable "slow paths" 不是一个正确的策略。
 
 
-
 Instead, the primary performance goal here is scalability: to
 predictably maintain efficiency even, or especially, when
 synchronizers are contended. Ideally, the overhead required to
@@ -152,7 +151,7 @@ provide shorter acquisition times than blocking locks, but usually
 waste cycles and generate memory contention, so are not often
 applicable.
 
-与之相反，主要的性能目标是可伸缩性(可扩展性):
+与内置锁比较，主要的性能目标是可伸缩性(可扩展性):为了预见到维持效率，特别是在synchronizers竞争时。理想地情况是，当只允许一个线程通过同步点，无论多少线程去尝试竞争，开销应该是恒量。某个线程被允许通过一个同步点但还未通过的过程中，主要的性能目标是减少过程的总时间。然而，这必须根据资源进行平衡，资源情况包括整体的cpu时间要求、内存流量已经线程调度开销。例如，自旋锁常常比阻塞锁使用更少的获取锁的时间，但是会浪费cpu周期和产生内存竞争，因此经常是不适用的。
 
 
 
@@ -165,8 +164,7 @@ aggregate throughput. No framework can decide between these
 conflicting goals on behalf of users; instead different fairness
 policies must be accommodated.
 
-
-
+这些目标代理两种使用形式。很多应用尽可能地最大化吞吐量，容忍线程饥饿的可能。另外，在资源控制型的应用中，线程间的公平性更重要，容忍少的吞吐量。对用户而言，没有框架能够在两种冲突的目标中选择，相反框架应该顾及到不太的公平策略。
 
 
 No matter how well-crafted they are internally, synchronizers
@@ -203,12 +201,19 @@ basic components:
 - Blocking and unblocking threads
 - Maintaining queues
 
+对获取和释放操作要求3个基本组件的支持:
+- 原子化第管理同步状态
+- 阻塞和激活线程
+- 管理队列
+
 It might be possible to create a framework that allows each of
 these three pieces to vary independently. However, this would
 neither be very efficient nor usable. For example, the information
 kept in queue nodes must mesh with that needed for unblocking,
 and the signatures of exported methods depend on the nature of
 synchronization state.
+
+创建一个框架，3个组件的变化独立，是有可能的。然而，这既不效率也不可用。例如，保存在队列节点的信息必须紧密配合激活线程需要，必须紧密配合导出依赖同步状态性质的方法签名。
 
 
 The central design decision in the synchronizer framework was
@@ -219,6 +224,12 @@ applicability, but provides efficient enough support that there is
 practically never a reason not to use the framework (and instead
 build synchronizers from scratch) in those cases where it does
 apply.
+
+在本同步器框架中中心设计决定是选择3个组件的混合实现，让允许在如何使用组件上有一个宽泛的使用选择。这样会有意地现在了可能使用的范围，但是在适合使用这个框架的场景中提供了有效支持。
+
+
+
+
 
 ### Synchronization State
 Class AbstractQueuedSynchronizer maintains synchronization state using only a single (32bit) int, and exports

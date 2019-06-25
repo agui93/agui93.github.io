@@ -11,7 +11,13 @@
 - [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)
 - [The java.util.concurrent Synchronizer Framework 论文]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_AbstractQueuedSynchronizer_paper)
 - [java AbstractQueuedSynchronizer 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_analyze_AbstractQueuedSynchronizer)
+- 线程池
+- executor框架
+- jdk中常用的线程工具(ConcurrentHashMap ConcurrentLinkedQueue 阻塞队列 原子操作类 CountDownLatch CyclicBarrier Semaphore Exchanger)
 - [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)
+- ThreadLocal
+- Servlet相关
+
 
 
 
@@ -35,10 +41,7 @@
 - [运行时环境]({{ site.baseurl }}/documents/notes/pointers_on_c/c_run_env)
 
 
-## Java并发编程的艺术
-- [并发编程的挑战]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_challenge)
-- [Java并发编程的底层实现原理]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_underlying_implementation_principle)
-- [Java中的锁]({{ site.baseurl }}/documents/notes/java_concurrent_programming_art/jcpa_lock)
+
 
 
 

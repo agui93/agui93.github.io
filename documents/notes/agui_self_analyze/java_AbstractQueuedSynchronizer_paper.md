@@ -3,6 +3,7 @@
 
 # The java.util.concurrent Synchronizer Framework
 
+梳理《[The java.util.concurrent Synchronizer Framework](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)》论文，略微翻译了部分，后续看时间情况在整理了。
 
 
 ## ABSTRACT
@@ -554,10 +555,442 @@ maintains reasonable performance on uniprocessors.
 
 ## USAGE
 
+
+Class AbstractQueuedSynchronizer ties together the above functionality and serves as a "template method pattern" [6] base class for synchronizers. Subclasses define only the methods that implement the state inspections and updates that control acquire and release. However, subclasses of AbstractQueuedSynchronizer are not themselves usable as
+synchronizer ADTs, because the class necessarily exports the
+methods needed to internally control acquire and release policies,
+which should not be made visible to users of these classes. All
+java.util.concurrent synchronizer classes declare a private inner
+AbstractQueuedSynchronizer subclass and delegate all
+synchronization methods to it. This also allows public methods to
+be given names appropriate to the synchronizer.
+
+AbstractQueuedSynchronizer类整合了上面的基础功能，提供给synchronizers的一个基础模板类。子类只需要定义
+
+
+For example, here is a minimal Mutex class, that uses
+synchronization state zero to mean unlocked, and one to mean
+locked. This class does not need the value arguments supported
+for synchronization methods, so uses zero, and otherwise ignores
+them.
+
+```
+class Mutex {
+	class Sync extends AbstractQueuedSynchronizer {
+		 public boolean tryAcquire(int ignore) {
+			 return compareAndSetState(0, 1);
+		 }
+		 public boolean tryRelease(int ignore) {
+			 setState(0); return true;
+		 }
+	}
+	private final Sync sync = new Sync();
+	public void lock() { sync.acquire(0); }
+	public void unlock() { sync.release(0); }
+}
+```
+
+A fuller version of this example, along with other usage guidance
+may be found in the J2SE documentation. Many variants are of
+course possible. For example, tryAcquire could employ "testand-test-and-set" by checking the state value before trying to
+change it.
+
+It may be surprising that a construct as performance-sensitive as
+a mutual exclusion lock is intended to be defined using a
+combination of delegation and virtual methods. However, these
+are the sorts of OO design constructions that modern dynamic
+compilers have long focussed on. They tend to be good at
+optimizing away this overhead, at least in code in which
+synchronizers are invoked frequently.
+
+
+Class AbstractQueuedSynchronizer also supplies a
+number of methods that assist synchronizer classes in policy
+control. For example, it includes timeout and interruptible
+versions of the basic acquire method. And while discussion so far
+has focussed on exclusive-mode synchronizers such as locks, the
+AbstractQueuedSynchronizer class also contains a
+parallel set of methods (such as acquireShared) that differ in
+that the tryAcquireShared and tryReleaseShared
+methods can inform the framework (via their return values) that
+further acquires may be possible, ultimately causing it to wake up
+multiple threads by cascading signals.
+
+
+Although it is not usually sensible to serialize (persistently store
+or transmit) a synchronizer, these classes are often used in turn to
+construct other classes, such as thread-safe collections, that are
+commonly serialized. The AbstractQueuedSynchronizer
+and ConditionObject classes provide methods to serialize
+synchronization state, but not the underlying blocked threads or other intrinsically transient bookkeeping. Even so, most
+synchronizer classes merely reset synchronization state to initial
+values on deserialization, in keeping with the implicit policy of
+built-in locks of always deserializing to an unlocked state. This
+amounts to a no-op, but must still be explicitly supported to
+enable deserialization of final fields.
+
+### Controlling Fairness
+Even though they are based on FIFO queues, synchronizers are
+not necessarily fair. Notice that in the basic acquire algorithm
+(Section 3.3), tryAcquire checks are performed before
+queuing. Thus a newly acquiring thread can “steal” access that is
+"intended" for the first thread at the head of the queue.
+
+
+
+This barging FIFO strategy generally provides higher aggregate
+throughput than other techniques. It reduces the time during
+which a contended lock is available but no thread has it because
+the intended next thread is in the process of unblocking. At the
+same time, it avoids excessive, unproductive contention by only
+allowing one (the first) queued thread to wake up and try to
+acquire upon any release. Developers creating synchronizers
+may further accentuate barging effects in cases where
+synchronizers are expected to be held only briefly by defining
+tryAcquire to itself retry a few times before passing back
+control
+
+
+Barging FIFO synchronizers have only probablistic fairness
+properties. An unparked thread at the head of the lock queue has
+an unbiased chance of winning a race with any incoming barging
+thread, reblocking and retrying if it loses. However, if incoming
+threads arrive faster than it takes an unparked thread to unblock,
+the first thread in the queue will only rarely win the race, so will
+almost always reblock, and its successors will remain blocked.
+With briefly-held synchronizers, it is common for multiple
+bargings and releases to occur on multiprocessors during the time
+the first thread takes to unblock. As seen below, the net effect is
+to maintain high rates of progress of one or more threads while
+still at least probabilistically avoiding starvation.
+
+Todo:摘取图片
+
+When greater fairness is required, it is a relatively simple matter
+to arrange it. Programmers requiring strict fairness can define
+tryAcquire to fail (return false) if the current thread is not at
+the head of the queue, checking for this using method
+getFirstQueuedThread, one of a handful of supplied
+inspection methods.
+
+A faster, less strict variant is to also allow tryAcquire to
+succeed if the the queue is (momentarily) empty. In this case,
+multiple threads encountering an empty queue may race to be the
+first to acquire, normally without enqueuing at least one of them.
+This strategy is adopted in all java.util.concurrent synchronizers
+supporting a "fair" mode.
+
+While they tend to be useful in practice, fairness settings have no
+guarantees, because the Java Language Specification does not
+provide scheduling guarantees. For example, even with a strictly
+fair synchronizer, a JVM could decide to run a set of threads
+purely sequentially if they never otherwise need to block waiting
+for each other. In practice, on a uniprocessor, such threads are 
+likely to each run for a time quantum before being pre-emptively
+context-switched. If such a thread is holding an exclusive lock, it
+will soon be momentarily switched back, only to release the lock
+and block now that it is known that another thread needs the lock,
+thus further increasing the periods during which a synchronizer is
+available but not acquired. Synchronizer fairness settings tend to
+have even greater impact on multiprocessors, which generate
+more interleavings, and hence more opportunities for one thread
+to discover that a lock is needed by another thread.
+
+
+Even though they may perform poorly under high contention
+when protecting briefly-held code bodies, fair locks work well,
+for example, when they protect relatively long code bodies
+and/or with relatively long inter-lock intervals, in which case
+barging provides little performance advantage and but greater
+risk of indefinite postponement. The synchronizer framework
+leaves such engineering decisions to its users.
+
+### Synchronizers
+Here are sketches of how java.util.concurrent synchronizer
+classes are defined using this framework:
+
+The ReentrantLock class uses synchronization state to hold
+the (recursive) lock count. When a lock is acquired, it also
+records the identity of the current thread to check recursions and
+detect illegal state exceptions when the wrong thread tries to
+unlock. The class also uses the provided ConditionObject,
+and exports other monitoring and inspection methods. The class
+supports an optional "fair" mode by internally declaring two
+different AbstractQueuedSynchronizer subclasses (the
+fair one disabling barging) and setting each ReentrantLock
+instance to use the appropriate one upon construction.
+
+The ReentrantReadWriteLock class uses 16 bits of the
+synchronization state to hold the write lock count, and the
+remaining 16 bits to hold the read lock count. The WriteLock
+is otherwise structured in the same way as ReentrantLock.
+The ReadLock uses the acquireShared methods to enable
+multiple readers.
+
+The Semaphore class (a counting semaphore) uses the
+synchronization state to hold the current count. It defines
+acquireShared to decrement the count or block if
+nonpositive, and tryRelease to increment the count, possibly
+unblocking threads if it is now positive.
+
+The CountDownLatch class uses the synchronization state to
+represent the count. All acquires pass when it reaches zero.
+
+The FutureTask class uses the synchronization state to
+represent the run-state of a future (initial, running, cancelled,
+done). Setting or cancelling a future invokes release,
+unblocking threads waiting for its computed value via acquire.
+
+
+The SynchronousQueue class (a CSP-style handoff) uses
+internal wait-nodes that match up producers and consumers. It
+uses the synchronization state to allow a producer to proceed
+when a consumer takes the item, and vice-versa.
+
+Users of the java.util.concurrent package may of course define
+their own synchronizers for custom applications. For example,
+among those that were considered but not adopted in the package
+are classes providing the semantics of various flavors of WIN32
+events, binary latches, centrally managed locks, and tree-based
+barriers.
+
+
+
+
 ## PERFORMANCE
+While the synchronizer framework supports many other styles of
+synchronization in addition to mutual exclusion locks, lock
+performance is simplest to measure and compare. Even so, there
+are many different approaches to measurement. The experiments
+here are designed to reveal overhead and throughput.
+
+In each test, each thread repeatedly updates a pseudo-random
+number computed using function nextRandom(int seed):
+```
+int t = (seed % 127773) * 16807 – (seed / 127773) * 2836;
+return (t > 0)? t : t + 0x7fffffff;
+```
+On each iteration a thread updates, with probability S, a shared
+generator under a mutual exclusion lock, else it updates its own
+local generator, without a lock. This results in short-duration
+locked regions, minimizing extraneous effects when threads are
+preempted while holding locks. The randomness of the function
+serves two purposes: it is used in deciding whether to lock or not
+(it is a good enough generator for current purposes), and also
+makes code within loops impossible to trivially optimize away.
+
+Four kinds of locks were compared: Builtin, using synchronized
+blocks; Mutex, using a simple Mutex class like that illustrated in
+section 4; Reentrant, using ReentrantLock; and Fair, using
+ReentrantLock set in its "fair" mode. All tests used build 46
+(approximately the same as beta2) of the Sun J2SE1.5 JDK in
+"server" mode. Test programs performed 20 uncontended runs
+before collecting measurements, to eliminate warm-up effects.
+Tests ran for ten million iterations per thread, except Fair mode
+tests were run only one million iterations
+
+
+Tests were performed on four x86-based machines and four
+UltraSparc-based machines. All x86 machines were running
+Linux using a RedHat NPTL-based 2.4 kernel and libraries. All
+UltraSparc machines were running Solaris-9. All systems were at
+most lightly loaded while testing. The nature of the tests did not
+demand that they be otherwise completely idle. The "4P" name
+reflects the fact a dual hyperthreaded (HT) Xeon acts more like a
+4-way than a 2-way machine. No attempt was made to normalize
+across the differences here. As seen below, the relative costs of
+synchronization do not bear a simple relationship to numbers of
+processors, their types, or speeds.
+
+
+Todo 整理 Table 1 Test Platforms
+
+
+### Overhead
+Uncontended overhead was measured by running only one
+thread, subtracting the time per iteration taken with a version
+setting S=0 (zero probability of accessing shared random) from a
+run with S=1. Table 2 displays these estimates of the per-lock
+overhead of synchronized code over unsynchronized code, in 
+nanoseconds. The Mutex class comes closest to testing the basic
+cost of the framework. The additional overhead for Reentrant
+locks indicates the cost of recording the current owner thread and
+of error-checking, and for Fair locks the additional cost of first
+checking whether the queue is empty.
+
+Table 2 also shows the cost of tryAcquire versus the "fast
+path" of a built-in lock. Differences here mostly reflect the costs
+of using different atomic instructions and memory barriers across
+locks and machines. On multiprocessors, these instructions tend
+to completely overwhelm all others. The main differences
+between Builtin and synchronizer classes are apparently due to
+Hotspot locks using a compareAndSet for both locking and
+unlocking, while these synchronizers use a compareAndSet for
+acquire and a volatile write (i.e., with a memory barrier on
+multiprocessors, and reordering constraints on all processors) on
+release. The absolute and relative costs of each vary across
+machines.
+
+At the other extreme, Table 3 shows per-lock overheads with S=1
+and running 256 concurrent threads, creating massive lock
+contention. Under complete saturation, barging-FIFO locks have
+about an order of magnitude less overhead (and equivalently
+greater throughput) than Builtin locks, and often two orders of
+magnitude less than Fair locks. This demonstrates the
+effectiveness of the barging-FIFO policy in maintaining thread
+progress even under extreme contention.
+
+Table 3 also illustrates that even with low internal overhead,
+context switching time completely determines performance for
+Fair locks. The listed times are roughly proportional to those for
+blocking and unblocking threads on the various platforms.
+
+Additionally, a follow-up experiment (using machine 4P only)
+shows that with the very briefly held locks used here, fairness
+settings had only a small impact on overall variance. Differences
+in termination times of threads were recorded as a coarse-grained
+measure of variability. Times on machine 4P had standard
+deviation of 0.7% of mean for Fair, and 6.0% for Reentrant. As a
+contrast, to simulate long-held locks, a version of the test was run
+in which each thread computed 16K random numbers while
+holding each lock. Here, total run times were nearly identical
+(9.79s for Fair, 9.72s for Reentrant). Fair mode variability
+remained small, with standard deviation of 0.1% of mean, while
+Reentrant rose to 29.5% of mean.
+
+Todo 整理 Table 2,3
+
+### Throughput
+Usage of most synchronizers will range between the extremes of
+no contention and saturation. This can be experimentally
+examined along two dimensions, by altering the contention
+probability of a fixed set of threads, and/or by adding more
+threads to a set with a fixed contention probability. To illustrate
+these effects, tests were run with different contention
+probablilities and numbers of threads, all using Reentrant locks.
+The accompanying figures use a slowdown metric:
+
+Todo 整理公式
+
+
+Here, t is the total observed execution time, b is the baseline time
+for one thread with no contention or synchronization, n is the
+number of threads, p is the number of processors, and S remains
+the proportion of shared accesses. This value is the ratio of
+observed time to the (generally unattainable) ideal execution time
+as computed using Amdahl's law for a mix of sequential and
+parallel tasks. The ideal time models an execution in which,
+without any synchronization overhead, no thread blocks due to
+conflicts with any other. Even so, under very low contention, a
+few test results displayed very small speedups compared to this
+ideal, presumably due to slight differences in optimization,
+pipelining, etc., across baseline versus test runs.
+
+The figures use a base 2 log scale. For example, a value of 1.0
+means that a measured time was twice as long as ideally possible,
+and a value of 4.0 means 16 times slower. Use of logs
+ameliorates reliance on an arbitrary base time (here, the time to
+compute random numbers), so results with different base
+computations should show similar trends. The tests used
+contention probabilities from 1/128 (labelled as "0.008") to 1,
+stepping in powers of 2, and numbers of threads from 1 to 1024,
+stepping in half-powers of 2. 
+
+On uniprocessors (1P and 1U) performance degrades with
+increasing contention, but generally not with increasing numbers
+of threads. Multiprocessors generally encounter much worse
+slowdowns under contention. The graphs for multiprocessors
+show an early peak in which contention involving only a few
+threads usually produces the worst relative performance. This
+reflects a transitional region of performance, in which barging
+and signalled threads are about equally likely to obtain locks,
+thus frequently forcing each other to block. In most cases, this is
+followed by a smoother region, as the locks are almost never
+available, causing access to resemble the near-sequential pattern
+of uniprocessors; approaching this sooner on machines with more
+processors. Notice for example that the values for full contention
+(labelled "1.000") exhibit relatively worse slowdowns on
+machines with fewer processors.
+
+On the basis of these results, it appears likely that further tuning
+of blocking (park/unpark) support to reduce context switching
+and related overhead could provide small but noticeable
+improvements in this framework. Additionally, it may pay off for
+synchronizer classes to employ some form of adaptive spinning
+for briefly-held highly-contended locks on multiprocessors, to
+avoid some of the flailing seen here. While adaptive spins tend to
+be very difficult to make work well across different contexts, it
+is possible to build custom forms of locks using this framework,
+targetted for specific applications that encounter these kinds of
+usage profiles.
+
+Todo 整理图片
+
+
+
+### 个人的测试环境和测试结果
+
 
 ## CONCLUSIONS
 
-## ACKNOWLEDGMENTS
+As of this writing, the java.util.concurrent synchronizer
+framework is too new to evaluate in practice. It is unlikely to see
+widespread usage until well after final release of J2SE1.5, and
+there will surely be unexpected consequences of its design, API,
+implementation, and performance. However, at this point, the
+framework appears successful in meeting the goals of providing
+an efficient basis for creating new synchronizers
 
+
+
+## ACKNOWLEDGMENTS
+Thanks to Dave Dice for countless ideas and advice during the
+development of this framework, to Mark Moir and Michael Scott
+for urging consideration of CLH queues, to David Holmes for
+critiquing early versions of the code and API, to Victor
+Luchangco and Bill Scherer for reviewing previous incarnations
+of the source code, and to the other members of the JSR166
+Expert Group (Joe Bowbeer, Josh Bloch, Brian Goetz, David
+Holmes, and Tim Peierls) as well as Bill Pugh, for helping with
+design and specifications and commenting on drafts of this paper.
+Portions of this work were made possible by a DARPA PCES
+grant, NSF grant EIA-0080206 (for access to the 24way Sparc)
+and a Sun Collaborative Research Grant.
+
+## REFERENCES
+[1] Agesen, O., D. Detlefs, A. Garthwaite, R. Knippel, Y. S.
+Ramakrishna, and D. White. An Efficient Meta-lock for
+Implementing Ubiquitous Synchronization. ACM OOPSLA
+Proceedings, 1999.
+[2] Andrews, G. Concurrent Programming. Wiley, 1991.
+[3] Bacon, D. Thin Locks: Featherweight Synchronization for
+Java. ACM PLDI Proceedings, 1998.
+[4] Buhr, P. M. Fortier, and M. Coffin. Monitor Classification,
+ACM Computing Surveys, March 1995.
+[5] Craig, T. S. Building FIFO and priority-queueing spin locks
+from atomic swap. Technical Report TR 93-02-02,
+Department of Computer Science, University of
+Washington, Feb. 1993.
+[6] Gamma, E., R. Helm, R. Johnson, and J. Vlissides. Design
+Patterns, Addison Wesley, 1996.
+[7] Holmes, D. Synchronisation Rings, PhD Thesis, Macquarie
+University, 1999.
+[8] Magnussen, P., A. Landin, and E. Hagersten. Queue locks
+on cache coherent multiprocessors. 8th Intl. Parallel
+Processing Symposium, Cancun, Mexico, Apr. 1994.
+[9] Mellor-Crummey, J.M., and M. L. Scott. Algorithms for
+Scalable Synchronization on Shared-Memory
+Multiprocessors. ACM Trans. on Computer Systems,
+February 1991
+[10] M. L. Scott and W N. Scherer III. Scalable Queue-Based
+Spin Locks with Timeout. 8th ACM Symp. on Principles
+and Practice of Parallel Programming, Snowbird, UT, June
+2001.
+[11] Sun Microsystems. Multithreading in the Solaris Operating
+Environment. White paper available at
+http://wwws.sun.com/software/solaris/whitepapers.html
+2002.
+[12] Zhang, H., S. Liang, and L. Bak. Monitor Conversion in a
+Multithreaded Computer System. United States Patent
+6,691,304. 2004.
 

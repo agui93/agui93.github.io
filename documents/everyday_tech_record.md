@@ -5,7 +5,7 @@
 
 ## 2019-07-08  
 
-阅读JDK-ThreadPoolExecutor注释,理解如下:
+阅读JDK-ThreadPoolExecutor注释:
 - Thread pools address two different problems; 解决的场景
 - newCachedThreadPool vs newFixedThreadPool vs newSingleThreadExecutor;常用工具
 - Core and maximum pool sizes; 讨论coreSize maxSize queue与创建线程、运行线程的关系
@@ -20,7 +20,16 @@
 
 
 
+## 2019-07-09  
 
 
+阅读JDK-ThreadPoolExecutor源码思考
+- 关注整体的性能指标:cpu、throughput 、memory
+- 线程池参数配置: coreSize maxSize workQueue keepAliveTime  threadFactory  rejectHandler
+- 最终要求: 参数配置与原理之间的关系, 参数配置与关注指标的关系, 不同参数配置下的典型适用场景, 使用ThreadPoolExecutor
 
-	
+探究:
+- coreSize maxSize queue与创建线程、运行线程的关系
+- prestartCoreThread、prestartAllCoreThreads的用法
+- 自定义ThreadFactory;可以定制the thread’s name, thread group, priority, daemon status
+- keepAliveTime 与allowCoreThreadTimeOut用法

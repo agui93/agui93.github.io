@@ -33,3 +33,64 @@
 - prestartCoreThread、prestartAllCoreThreads的用法
 - 自定义ThreadFactory;可以定制the thread’s name, thread group, priority, daemon status
 - keepAliveTime 与allowCoreThreadTimeOut用法
+- io密集型、计算密集型、混合型的任务下场景的选择
+
+
+## 2019-07-10
+
+读ArrayBlockingQueue LinkedBlockingQueue SynchronousQueue实现,<br/>
+看注释时查询到的资料jdk中集合的简介: <br/>
+https://docs.oracle.com/javase/8/docs/technotes/guides/collections/index.html <br/>
+https://docs.oracle.com/javase/tutorial/index.html <br/>
+
+**ArrayBlockingQueue**
+```
+	//ArrayBlockingQueue:通过生成消费的模式,使用lock + notEmpty + notFull同步
+	
+	Object[] items;  //The queued items
+	int takeIndex;   //items index for next take, poll, peek or remove 
+	int putIndex;    //items index for next put, offer, or add 
+	int count;       //Number of elements in the queue 
+	final ReentrantLock lock;      //Main lock guarding all access 
+	private final Condition notEmpty;      //Condition for waiting takes 
+	private final Condition notFull; 	//Condition for waiting puts 
+```
+
+**LinkedBlockingQueue** 实现核心是:<br/>
+count == capacity时插入数据，不需要等待的方法插入失败,需要等待的方法通过notFull等待，插入数据后如果count < capacity,notFull发出signal通知.  <br/>
+count == 0时获取数据,不需要等待的方法返回null,需要等待的方法通过notEmpty等待，获取数据后如果count>0,notEmpty发出signal通知.   <br/>
+```
+ //Linked list node class
+static class Node<E> {
+    E item;
+    /**
+     * One of:
+     * - the real successor Node
+     * - this Node, meaning the successor is head.next
+     * - null, meaning there is no successor (this is the last node)
+     */
+    Node<E> next;
+    Node(E x) { item = x; }
+}
+
+
+private final int capacity;/** The capacity bound, or Integer.MAX_VALUE if none */
+private final AtomicInteger count = new AtomicInteger();/** Current number of elements */
+
+transient Node<E> head; //Head of linked list.Invariant: head.item == null
+private transient Node<E> last;//Tail of linked list. Invariant: last.next == null
+
+private final ReentrantLock takeLock = new ReentrantLock();    /** Lock held by take, poll, etc */
+private final Condition notEmpty = takeLock.newCondition();    /** Wait queue for waiting takes */
+
+private final ReentrantLock putLock = new ReentrantLock();    /** Lock held by put, offer, etc */
+private final Condition notFull = putLock.newCondition();    /** Wait queue for waiting puts */
+```
+
+
+
+
+
+
+
+

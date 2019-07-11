@@ -88,6 +88,11 @@ private final Condition notFull = putLock.newCondition();    /** Wait queue for 
 ```
 
 
+## 2019-07-11
+读SynchronousQueue源码中关于TransferQueue的实现
+
+参考: http://www.cs.rochester.edu/research/synchronization/pseudocode/duals.html <br/>
+参考: http://www.cs.rochester.edu/u/scott/papers/2004_DISC_dual_DS.pdf <br/>
 
 
 

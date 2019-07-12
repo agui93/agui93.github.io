@@ -3,10 +3,11 @@
 
 # 笔记
 
+## Footprint
+[Daily Record]({{ site.baseurl }}/documents/everyday_tech_record)
 
-## myself
-- [everyday tech record]({{ site.baseurl }}/documents/everyday_tech_record)
-- [java unsafe 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
+## Own
+- [sun.misc.Unsafe]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
 - [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
 - [java wait notivication 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_wait_notification) 
 - [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)
@@ -18,6 +19,7 @@
 - [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)
 - ThreadLocal
 - Servlet相关
+
 
 
 

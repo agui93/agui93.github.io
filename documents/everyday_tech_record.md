@@ -96,6 +96,8 @@ private final Condition notFull = putLock.newCondition();    /** Wait queue for 
 
 
 
+## 2019-07-12
+读SynchronousQueue源码
 
-
+https://juejin.im/post/5ae754c7f265da0ba76f8534
 

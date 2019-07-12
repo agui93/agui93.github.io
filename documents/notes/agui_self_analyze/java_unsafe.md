@@ -35,25 +35,19 @@ static {
 
 
 ### Concurrency
+compareAndSwapInt 、compareAndSwapLong  、compareAndSwapObject <br/>
+park、unpark
 
 ### Memory
 allocateMemory、reallocateMemory、freeMemory分别用于分配内存，扩充内存和释放内存
 
 
+### offSet and indexScale
+arrayBaseOffset方法可以获取数组第一个元素的偏移地址，例如 ARRAY_BOOLEAN_BASE_OFFSET、ARRAY_OBJECT_BASE_OFFSET
 
+arrayIndexScale方法获取数组的转换因子，也就是数组中元素的地址增量，例如ARRAY_BOOLEAN_INDEX_SCALE、ARRAY_OBJECT_INDEX_SCALE
 
-
-### 字段的定位
-JAVA中对象的字段的定位可能通过staticFieldOffset方法实现，该方法返回给定field的内存地址偏移量，这个值对于给定的filed是唯一的且是固定不变的。
-
-getIntVolatile方法获取对象中offset偏移地址对应的整型field的值,支持volatile load语义。
-
-getLong方法获取对象中offset偏移地址对应的long型field的值
-
-### 数组元素定位：
-
-Unsafe类中有很多以BASE_OFFSET结尾的常量，比如ARRAY_INT_BASE_OFFSET，ARRAY_BYTE_BASE_OFFSET等，这些常量值是通过arrayBaseOffset方法得到的。arrayBaseOffset方法是一个本地方法，可以获取数组第一个元素的偏移地址。Unsafe类中还有很多以INDEX_SCALE结尾的常量，比如 ARRAY_INT_INDEX_SCALE ， ARRAY_BYTE_INDEX_SCALE等，这些常量值是通过arrayIndexScale方法得到的。arrayIndexScale方法也是一个本地方法，可以获取数组的转换因子，也就是数组中元素的增量地址。将arrayBaseOffset与arrayIndexScale配合使用，可以定位数组中每个元素在内存中的位置。
-
+配合arrayBaseOffset与arrayIndexScale可以定位数组中每个元素在内存中的位置.
 
 
 

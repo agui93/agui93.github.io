@@ -7,6 +7,7 @@ AbstractQueuedSynchronizer是构建并发包工具的基本框架,
 最直接的参考资料有:
 - Doug Lea的论文《 [The java.util.concurrent Synchronizer Framework](http://gee.cs.oswego.edu/dl/papers/aqs.pdf)》
 - JDK中的AbstractQueuedSynchronizer源码
+- https://docs.oracle.com/javase/8/docs/api/index.html?java/util/concurrent/atomic/package-summary.html
 
 
 

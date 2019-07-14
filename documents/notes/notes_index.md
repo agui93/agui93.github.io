@@ -18,9 +18,17 @@
 - jdk中常用的线程工具(ConcurrentHashMap ConcurrentLinkedQueue 阻塞队列 原子操作类 CountDownLatch CyclicBarrier Semaphore Exchanger)
 - [Disruptor 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_lmax_disruptor)
 - ThreadLocal
-- Servlet相关
+- [Servlet]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_servlet)
+- [Java™ Tutorials]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_tutorials)
 
+## Data Structure and Algorithms
+- [数据结构和算法]({{ site.baseurl }}/documents/notes/agui_self_analyze/data_structure_and_algorithms)
 
+## Mysql
+- [Mysql Entry]({{ site.baseurl }}/documents/notes/mysql/mysql_entry)
+
+## C Primer Plus
+- [C++ Entry]({{ site.baseurl }}/documents/notes/c_primer_plus/c_primer_plus_entry)
 
 
 

@@ -14,6 +14,8 @@
 
 [The "Double-Checked Locking is Broken" Declaration](http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html)
 
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html
+
 Java并发编程的艺术第3章节
 
 

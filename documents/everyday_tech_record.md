@@ -3,6 +3,102 @@
 
 
 
+## 2019-07-17
+读Disruptor源码, 结合下图已梳理流程清晰
+
+![Disruptor Concepts]({{ site.baseurl }}/imgs/everyday_tech_record/disruptor_concepts.png)
+
+```
+/**
+ *
+ * Disruptor:
+ * ==========
+ *                        track to prevent wrap
+ *             +---------------------------------------------------+
+ *             |                                                   | 
+ *             |              get                                  | 
+ *             |  +----------------------------+                   |
+ *             |  |                            |                   v
+ *             |  v                            |             +-----EP2
+ * +----+    +====+    +====+   +-----+     +====+  waitFor  |
+ * | P1 |--->| RB |<---| SB1|   | EP1 |<----|SB2 |<----------+
+ * +----+    +====+    +====+   +-----+     +====+           |
+ *      claim  |   get    ^        |                         |
+ *             |          |        |                         +-----EP3
+ *             |          +--------+                               ^
+ *             |            waitFor                                |
+ *             |                                                   |
+ *             +---------------------------------------------------+
+ *                  track to prevent wrap
+ *
+ * P1   - Publisher 1    ;publish时会发完signal,唤醒waitFor
+ * RB   - RingBuffer
+ * SB1  - SequenceBarrier 1 ;使用的dependentSequence是ringBuffer的cursor
+ * EP1  - EventProcessor 1  ;
+ * SB2  - SequenceBarrier 2 ;使用的dependentSequence是EP1的消费执行位置sequence,确保EP2和EP3消费时不超过EP1
+ * EP2  - EventProcessor 2  ;
+ * EP3  - EventProcessor 3  ;
+ *
+ */
+ ```
+￼
+ 
+ 
+**下一步**: 画类图和时序图，实际应用中需要注意的事项
+
+
+
+
+## 2019-07-16 待整理
+//a Store/Store barrier between this write and any previous store.   <br/>
+UNSAFE.putOrderedLong(this, VALUE_OFFSET, value);   <br/>
+https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6275329   <br/>
+https://stackoverflow.com/questions/1468007/atomicinteger-lazyset-vs-set/14020946
+
+
+//Store/Store barrier between this write and any previous write and a Store/Load barrier between this write and any subsequent volatile read.    <br/>
+UNSAFE.putLongVolatile(this, VALUE_OFFSET, value);
+
+
+Unsafe.putLong    <br/>
+区别是什么???   <br/>
+https://stackoverflow.com/questions/1468007/atomicinteger-lazyset-vs-set/14020946   <br/>
+https://stackoverflow.com/questions/48615456/what-is-difference-between-getxxxvolatile-vs-getxxx-in-java-unsafe   <br/>
+http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html#conclusion   <br/>
+https://www.cnblogs.com/mickole/articles/3757278.html   <br/>
+https://stackoverflow.com/questions/30600621/java-unsafe-storefence-documentation-wrong   <br/>
+https://www.jianshu.com/p/2ab5e3d7e510   <br/>
+http://gee.cs.oswego.edu/dl/jmm/cookbook.html   <br/>
+
+
+
+
+为了保证内存可见性，Java编译器在生成指令序列的适当位置会插入内存屏障指令来禁 止特定类型的处理器重排序。JMM把内存屏障指令分为4类
+
+LoadLoad Barriers:     Load1; LoadLoad; Load2   <br/>	确保Load1的读取指令，执行先于，load2及load2后续的读取指令   <br/>
+LoadStore Barries:	    Load1; LoadStore; Store2   <br/>	确保Load1的读取指令，执行先于，Store2及Store2后续的存储指令   <br/>
+StoreStore Barries:     Store1; StoreStore; Store2   <br/>	确保Store1的存储指令，执行先于，Store2及Store2后续的存储指令   <br/>
+StoreLoad Barries:     Store1; StoreLoad; Load2   <br/>	确保Store1的存储指令，执行先于，load2及load2后续的读取指令   <br/>
+
+StoreLoad Barriers是一个“全能型”的屏障，它同时具有其他3个屏障的效果。现代的多处 理器大多支持该屏障（其他类型的屏障不一定被所有处理器支持）。执行该屏障开销会很昂 贵，因为当前处理器通常要把写缓冲区中的数据全部刷新到内存中（Buffer Fully Flush）。
+
+
+
+volatile写的内存语义如下。 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内 存。   <br/>
+volatile读的内存语义如下。 当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主 内存中读取共享变量。
+
+在每个volatile写操作的前面插入一个StoreStore屏障。    <br/>
+在每个volatile写操作的后面插入一个StoreLoad屏障。    <br/>
+在每个volatile读操作的后面插入一个LoadLoad屏障。    <br/>
+在每个volatile读操作的后面插入一个LoadStore屏障。   <br/>
+
+
+https://stackoverflow.com/questions/15360598/what-does-a-loadload-barrier-really-do
+
+
+
+
+
 ## 2019-07-08  
 
 阅读JDK-ThreadPoolExecutor注释:
@@ -139,4 +235,39 @@ for (int i = 0; i < bufferSize; i++) {
 }
     
 ```
+
+
+
+## 2019-07-15
+
+算法ceilingNextPowerOfTwo的java实现
+public static int ceilingNextPowerOfTwo(final int x){
+    return 1 << (32 - Integer.numberOfLeadingZeros(x - 1));
+}
+
+
+equals 与 hashCode方法: 
+https://www.geeksforgeeks.org/equals-hashcode-methods-java/
+https://www.geeksforgeeks.org/override-equalsobject-hashcode-method/
+https://stackoverflow.com/questions/27581/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java
+
+
+
+equals vs  operator==  
+https://stackoverflow.com/questions/7520432/what-is-the-difference-between-and-equals-in-java
+https://www.geeksforgeeks.org/difference-equals-method-java/
+
+
+How to print address of an object?
+https://stackoverflow.com/questions/18396927/how-to-print-the-address-of-an-object-if-you-have-redefined-tostring-method
+
+
+
+
+
+
+
+
+
+
 

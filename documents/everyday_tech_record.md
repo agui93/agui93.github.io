@@ -1,6 +1,47 @@
 - 目录
 {:toc #markdown-toc}	
 
+## 2019-07-19
+Disruptor源码中的perfTest
+
+**Latency Performance Testing**	<br/>
+PingPongQueueLatencyTest VS PingPongSequencedLatencyTest
+
+
+
+**Throughput Performance Test** <br/>	
+
+Unicast:1P-1C	 <br/>		
+OneToOneQueueThroughputTest   OneToOneQueueBatchedThroughputTest  <br/>
+VS    <br/>						 
+OneToOneSequencedThroughputTest  OneToOneSequencedBatchThroughputTest   OneToOneSequencedPollerThroughputTest   OneToOneSequencedLongArrayThroughputTest 
+
+
+Pipeline: 1P – 3C <br/>		
+OneToThreePipelineQueueThroughputTest
+VS
+OneToThreePipelineSequencedThroughputTest
+
+
+Sequencer: 3P – 1C <br/>		
+ThreeToOneQueueThroughputTest    VS    ThreeToOneSequencedThroughputTest   ThreeToOneSequencedBatchThroughputTest
+
+
+Multicast: 1P – 3C <br/>
+OneToThreeQueueThroughputTest   VS   OneToThreeSequencedThroughputTest
+
+
+Diamond: 1P – 3C	<br/>		
+OneToThreeDiamondQueueThroughputTest   VS   OneToThreeDiamondSequencedThroughputTest
+
+
+
+
+
+
+## 2019-07-18
+Disruptor源码中的test阅读
+
 
 
 ## 2019-07-17
@@ -44,7 +85,6 @@
 ￼
  
  
-**下一步**: 画类图和时序图，实际应用中需要注意的事项
 
 
 

@@ -1,6 +1,130 @@
 - 目录
 {:toc #markdown-toc}	
 
+## 2019-07-23
+how ZooKeeper works as well how to work with it?
+
+ZooKeeper concept
+- The ZooKeeper Data Model
+- ZooKeeper Sessions
+- ZooKeeper Watches
+- ZooKeeper access control using ACLs
+- Consistency Guarantees
+
+practical programming
+* Building Blocks: A Guide to ZooKeeper Operations
+* Bindings
+* Program Structure, with Simple Example 
+* Gotchas: Common Problems and Troubleshooting
+
+**The ZooKeeper Data Model**<br/>
+a hierarchal name space, each node in the namespace can have data associated with it as well as children.
+
+**zNodes**<br/>
+Every node in a ZooKeeper tree is referred to as a znode.
+			
+**ZooKeeper Stat Structure**<br/>
+- czxid :The zxid of the change that caused this znode to be created.
+- mzxid :The zxid of the change that last modified this znode.
+- pzxid :The zxid of the change that last modified children of this znode.
+- ctime :The time in milliseconds from epoch when this znode was created.
+- mtime :The time in milliseconds from epoch when this znode was last modified.
+- version :The number of changes to the data of this znode.
+- cversion :The number of changes to the children of this znode.
+- aversion :The number of changes to the ACL of this znode.
+- ephemeralOwner :The session id of the owner of this znode if the znode is an ephemeral node. If it is not an ephemeral node, it will be zero.
+- dataLength :The length of the data field of this znode.
+- numChildren The number of children of this znode.
+
+
+
+
+**Watches**<br/>
+Clients can set watches on znodes. Changes to that znode trigger the watch and then clear the watch. When a watch triggers, ZooKeeper sends the client a notification.
+	
+	
+	
+**Data Access**<br/>
+The data stored at each znode in a namespace is read and written atomically. Reads get all the data bytes associated with a znode and a write replaces all the data. <br/>
+Each node has an Access Control List (ACL) that restricts who can do what.
+
+
+
+**Ephemeral Nodes**<br/>
+exists as long as the session that created the znode is active. When the session ends the znode is deleted. Because of this behavior ephemeral znodes are not allowed to have children.
+			
+			
+**Sequence Nodes -- Unique Naming**<br/>
+When creating a znode you can also request that ZooKeeper append a monotonically increasing counter to the end of path.<br/>
+Queue Recipe example uses this feature.<br/>
+			 
+
+**Container Nodes**<br/>
+When the last child of a container is deleted, the container becomes a candidate to be deleted by the server at some point in the future.<br/>
+Given this property, you should be prepared to get KeeperException.NoNodeException when creating children inside of container znodes.
+			
+**TTL Nodes**<br/>
+If the znode is not modified within the TTL and has no children it will become a candidate to be deleted by the server at some point in the future.
+
+
+
+**Time in ZooKeeper**
+<br/>**Zxid**<br/>
+1.Every change to the ZooKeeper state receives a stamp in the form of a zxid (ZooKeeper Transaction Id). <br/>
+2.This exposes the total ordering of all changes to ZooKeeper. Each change will have a unique zxid and if zxid1 is smaller than zxid2 then zxid1 happened before zxid2.
+<br/>**Version numbers**<br/>
+1.Every change to a node will cause an increase to one of the version numbers of that node. <br/>
+2.The three version numbers are version (number of changes to the data of a znode), cversion (number of changes to the children of a znode), and aversion (number of changes to the ACL of a znode).
+<br/>**Ticks**<br/>
+1.When using multi-server ZooKeeper, servers use ticks to define timing of events such as status uploads, session timeouts, connection timeouts between peers, etc. <br/>
+2.The tick time is only indirectly exposed through the minimum session timeout (2 times the tick time); <br/>
+3.if a client requests a session timeout less than the minimum session timeout, the server will tell the client that the session timeout is actually the minimum session timeout.
+<br/>**Real time**<br/>
+ZooKeeper doesn't use real time, or clock time, at all except to put timestamps into the stat structure on znode creation and znode modification
+
+## 2019-07-22
+
+分布式系统是同时跨越多个物理主机，独立运行的多个软件组件所组成的系统。
+
+主节点选举、崩溃检测和元数据存储(大多数流行的任务，如选举主节点，跟踪有效的从节点，维 护应用元数据)
+
+ZooKeeper使用共享存储模型来实现应用间 的协作和同步原语。对于共享存储本身，又需要在进程和存储间进行网络通信。
+
+消息延迟	处理器性能	时钟偏移
+
+
+实现主-从模式的系统，必须解决三个关键问题：<br/>
+**主节点崩溃**<br/> 1.新的主要主节点需要能够恢复到旧的主要主节点崩溃时的状态<br/>
+2.主节点有效，备份主节点却 认为主节点已经崩溃<br/> 3.网络分区,出现脑裂(系统中两个或者多个部分开始独立工作，导致整体行为不一致性)<br/>
+
+**从节点崩溃**<br/>
+1.主节点具有检测从节点的崩溃的能力<br/>
+2.从节点也许执行了部分任务，也许全部执行完，但没有报告结果。如果整个运算过程产生了其他 作用，有必要执行某些恢复过程来清除之前的状态
+
+**通信故障**<br/>
+1.多个从节点执行相同任务的可能性(比如网络分区导致，重新分配一个任务可能会导致两个从节点执 行相同的任务)<br/>
+2.通信故障导致的对锁等同步原语的影响<br/>
+			
+首先，客户端可以告诉ZooKeeper某些数据的状态是临时状态 （ephemeral）；其次，同时ZooKeeper需要客户端定时发送是否存活的 通知，如果一个客户端未能及时发送通知，那么所有从属于这个客户端 的临时状态的数据将全部被删除。		通过这两个机制，在崩溃或通信故障 发生时，我们就可以预防客户端独立运行而发生的应用宕机。
+
+如果我们不能控制系统中的消息延迟， 就不能确定一个客户端是崩溃还是运行缓慢，因此，当我们猜测一个客 户端已经崩溃，而实际上我们也需要假设客户端仅仅是执行缓慢，其在后续还可能执行一些其他操作。
+
+
+
+<br/><br/>
+**分布式协作的难点**<br/>
+1.应用启动后，所有不同的进程通过某种方法，需要知道应用的配置信息<br/>
+2.配置信息也许发生了变化，所有进 程需要变更配置信息<br/>
+3.组成员关系的问题，当负载变化时，我们 希望增加或减少新机器和进程<br/>
+
+在开发分布式应用时，就会遇到真正 困难的问题，就不得不面对故障，如崩溃、通信故障等各种情况。这 些问题会在任何可能的点突然出现，甚至无法列举需要处理的所有的情 况。	
+
+
+
+FLP定律:证明了在 异步通信的分布式系统中，进程崩溃，所有进程可能无法在这个比特位 的配置上达成一致
+
+CAP定律:一致性 （Consistency）、可用性（Availability）和分区容错性（Partitiontolerance），该定律指出，当设计一个分布式系统时，我们希望这三种 属性全部满足，但没有系统可以同时满足这三种属性
+ZooKeeper的设计尽可能满足一致性和可用性，当然，在发生网络分区 时ZooKeeper也提供了只读能力。
 
 
 

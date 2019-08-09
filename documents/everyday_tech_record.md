@@ -1,6 +1,205 @@
 - 目录
 {:toc #markdown-toc}	
 
+## 2019-08-05
+JMX <br/>
+https://docs.oracle.com/javase/tutorial/jmx/index.html <br/>
+https://docs.oracle.com/javase/8/docs/technotes/guides/management/toc.html <br/>
+-Dcom.sun.management.jmxremote  <br/>
+-Dcom.sun.management.jmxremote.port=portNum <br/>
+-Dcom.sun.management.jmxremote.authenticate=false <br/> 
+-Dcom.sun.management.jmxremote.ssl=false <br/>
+
+
+常见的java命令选项 <br/>
+http://demo.bullfrog.live/jvm/environment
+
+常见的java gc相关 <br/>
+http://www.herongyang.com/Java-GC/
+
+
+-Djava.security.egd=file:/dev/./urandom <br/>
+https://stackoverflow.com/questions/137212/how-to-solve-slow-java-securerandom  <br/>
+https://ruleoftech.com/2016/avoiding-jvm-delays-caused-by-random-number-generation  <br/>
+http://www.thezonemanager.com/2015/07/whats-so-special-about-devurandom.html  <br/>
+https://bugs.openjdk.java.net/browse/JDK-6202721  <br/>
+
+
+
+-Djava.net.preferIPv4Stack=true <br/>
+https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html <br/>
+https://stackoverflow.com/questions/9882357/how-to-set-java-net-preferipv4stack-true-at-runtime <br/>
+https://docs.oracle.com/javase/8/docs/technotes/guides/net/ipv6_guide/ <br/>
+https://github.com/netty/netty/issues/5657 <br/>
+
+
+
+-XX:ErrorFile <br/>
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/felog001.html <br/>
+https://stackoverflow.com/questions/22618582/java-how-to-specify-jvm-argument-xxerrorfile-and-preserve-automatic-pid-in-fi
+
+
+-XX:HeapDumpOnOutOfMemoryError  <br/>
+ -XX:HeapDumpPath <br/>
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/clopts001.html#CHDFDIJI
+
+
+
+-agentlib:jdwp <br/>
+https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jdb.html <br/>
+https://www.ibm.com/support/knowledgecenter/en/SSYKE2_8.0.0/com.ibm.java.80.doc/user/jdb.html
+
+
+
+
+
+-Xms256m -Xmx2048m <br/>
+Java -X查看非标准项的设置 <br/>
+https://stackoverflow.com/questions/14763079/what-are-the-xms-and-xmx-parameters-when-starting-jvm
+
+
+-XX:+UseG1GC  <br/>
+https://stackoverflow.com/questions/2881827/how-does-the-garbage-first-garbage-collector-work <br/>
+https://docs.oracle.com/javase/7/docs/technotes/guides/vm/G1.html
+
+
+
+-XX:-OmitStackTraceInFastThrow 
+https://stackoverflow.com/questions/2411487/nullpointerexception-in-java-with-no-stacktrace
+
+
+
+ -XX:+PrintGCDetails  <br/>
+-XX:+PrintGCDateStamps  <br/>
+https://blog.gceasy.io/2016/02/22/understand-garbage-collection-log/#more-401
+
+
+-XX:+PrintGCApplicationConcurrentTime  <br/>
+-XX:+PrintGCApplicationStoppedTime  <br/>
+https://stackoverflow.com/questions/29666057/analyzing-gc-logs/29673564#29673564
+http://www.herongyang.com/Java-GC/
+
+
+## 2019-08-02
+阅读::Linux网络编程(第二版)
+
+编程环境:编辑器vim   gcc makefile  gdb  cmake     
+
+Gcc
+编译:		生成目标文件;		多文件编译;		-E预处理;		-S生成汇编语言;		gcc常用选项<br/>
+头文件和库文件的默认搜索路径<br/>
+静态链接库<br/>
+动态链接库<br/>
+
+
+Makefile<br/>
+	http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
+	https://www.tutorialspoint.com/makefile/
+	https://makefiletutorial.com/            
+	https://opensource.com/article/18/8/what-how-makefile
+	https://www.gnu.org/software/make/manual/html_node/index.html#toc-An-Introduction-to-Makefiles
+	https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html
+
+
+GDB<br/>
+	https://www.kancloud.cn/wizardforcel/gdb-tips-100/146708 <br/>
+	**gdbinit**<br/>
+	https://github.com/cyrus-and/gdb-dashboard	https://www.helplib.com/GitHub/article_129194
+	https://www.cntofu.com/book/46/gdb/gdb_dashboard_debug_info_at_a_glance.md        	https://www.helplib.com/GitHub/article_129194 <br/>
+	https://github.com/gdbinit/Gdbinit <br/>
+	https://github.com/longld/peda <br/>
+	https://github.com/hugsy/gef <br/>
+	堆栈查看;	汇编含义的解读;	寄存器查看;	memeory查看
+
+
+## 2019-07-26
+
+https://zookeeper.apache.org/doc/r3.5.5/recipes.html#sc_leaderElection
+<br/>分析zookeeper源码中的选举方案LeaderElectionSupportTest
+
+查询到资料: 关于分布式的Shared Reentrant Read Write Lock<br/>
+https://github.com/Netflix/curator/wiki/Shared-Reentrant-Read-Write-Lock
+Apache-curator
+
+https://github.com/fpj/zookeeper-book-example
+
+
+## 2019-07-25
+
+
+**ZooKeeper Recipes and Solutions**
+https://zookeeper.apache.org/doc/r3.5.5/recipes.html#sc_leaderElection
+
+
+**Zookeeper Atomic Broadcast (ZAB)**
+https://zookeeper.apache.org/doc/r3.2.2/zookeeperInternals.html
+https://distributedalgorithm.wordpress.com/tag/zookeeper/
+ 
+**I0Itec-zkClient**
+http://jm.taobao.org/2011/07/15/1047/
+https://shift-alt-ctrl.iteye.com/blog/1955740
+https://www.cnblogs.com/rilley/p/5451052.html
+
+
+
+## 2019-07-24
+
+**Zookeeper Leader Election**<br/>
+https://zookeeper.apache.org/doc/r3.5.5/recipes.html#sc_leaderElection
+https://www.tutorialspoint.com/zookeeper/zookeeper_leader_election
+https://github.com/ruiposse/zookeeper-leader-election/blob/master/src/client/ZooKeeperClientThree.java
+https://www.allprogrammingtutorials.com/tutorials/leader-election-using-apache-zookeeper.php
+https://www.outbrain.com/techblog/2011/07/leader-election-with-zookeeper/
+
+
+
+分类slf4j  logback  log4j2 jdk  jcl   log4j  
+	spring中的log用的是org.apache.commons.logging
+slf4j-api，logback结合使用
+http://www.logback.cn/
+https://segmentfault.com/a/1190000008315137#articleHeader9
+https://segmentfault.com/a/1190000008315137
+https://blog.csdn.net/johnson_moon/article/details/77532583
+https://cloud.tencent.com/developer/article/1329362
+
+
+
+配置:logback.xml   alps-logger.xml	RootLogger	RuntimeLoggerConfigure	LoggerFactory
+
+
+**java==操作符**<br/>
+https://stackoverflow.com/questions/7520432/what-is-the-difference-between-and-equals-in-java
+https://stackoverflow.com/questions/1586223/how-does-the-tostring-equals-object-methods-work-differently-or-similar
+
+
+**Autoboxing and unboxing**<br/>
+https://stackoverflow.com/questions/27647407/why-do-we-use-autoboxing-and-unboxing-in-java
+https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html
+
+Converting a primitive value (an int, for example) into an object of the corresponding wrapper class (Integer) is called autoboxing. The Java compiler applies autoboxing when a primitive value is:
+* Passed as a parameter to a method that expects an object of the corresponding wrapper class.
+* Assigned to a variable of the corresponding wrapper class.
+
+Converting an object of a wrapper type (Integer) to its corresponding primitive (int) value is called unboxing. The Java compiler applies unboxing when an object of a wrapper class is:
+* Passed as a parameter to a method that expects a value of the corresponding primitive type.
+* Assigned to a variable of the corresponding primitive type.
+
+
+
+|Primitive type	|Wrapper class|
+| --- | --- |
+|boolean|	Boolean|
+|byte	|Byte|
+|char	|Character|
+|float	|Float|
+|int	|Integer|
+|long	|Long|
+|short	|Short|
+|double	|Double|
+
+
+
+
 ## 2019-07-23
 how ZooKeeper works as well how to work with it?
 

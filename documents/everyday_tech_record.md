@@ -1,6 +1,143 @@
 - 目录
 {:toc #markdown-toc}	
 
+## 2019-08-22
+Gradle buildscript的解释		<br/>
+https://www.jianshu.com/p/322f1427401b
+
+Gradle		<br/>
+https://dongchuan.gitbooks.io/gradle-user-guide-/
+https://www.w3cschool.cn/gradle/
+https://www.cnblogs.com/davenkin/p/gradle-learning-1.html
+
+
+todo ::::Plugin : java maven war jetty
+
+
+## 2019-08-21
+
+C语言宏定义中do{}while(0)的用法原因 <br/>
+http://www.spongeliu.com/415.html
+
+
+
+Redis中内存分配  以及  基于的原理   <br/> 
+https://zhuanlan.zhihu.com/p/51056407
+https://zhuanlan.zhihu.com/p/51056407
+https://zhuanlan.zhihu.com/p/38276637
+https://halelu.github.io/2017/09/Redis-Source-Code-1/
+https://blog.csdn.net/guodongxiaren/article/details/44747719
+https://developer.apple.com/library/archive/documentation/
+System/Conceptual/ManPages_iPhoneOS/man3/malloc_size.3.html
+
+
+
+## 2019-8-20
+
+Mybatis   <br/>
+https://www.tutorialspoint.com/mybatis/index.htm
+http://www.mybatis.org/mybatis-3/
+
+
+Spring JDBC   <br/>
+https://docs.spring.io/spring/docs/4.0.x/spring-framework-reference/html/jdbc.html
+
+Java Mysql-jdbc tutorials   <br/>
+http://www.herongyang.com/MySQL/Java-Program-and-MySQL-Server.html
+https://www.tutorialspoint.com/jdbc/
+https://www.javatpoint.com/java-jdbc
+http://www.herongyang.com/JDBC/
+
+
+## 2019-08-16
+
+spring jdbc    <br/>
+https://docs.spring.io/spring/docs/4.0.x/spring-framework-reference/html/jdbc.html
+https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/data-access.html#jdbc
+
+Java JDBC    <br/>
+https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/data-access.html#jdbc
+http://www.herongyang.com/JDBC/MySQL-JDBC-Driver.html
+http://www.herongyang.com/JDBC/MySQL-PreparedStatement.html
+
+
+
+JdbcTemplate is the central class in the JDBC core package. It handles the creation and release of resources, which helps you avoid common errors, such as forgetting to close the connection. It performs the basic tasks of the core JDBC workflow (such as statement creation and execution), leaving application code to provide SQL and extract results. The JdbcTemplate class:
+* Runs SQL queries
+* Updates statements and stored procedure calls
+* Performs iteration over ResultSet instances and extraction of returned parameter values.
+* Catches JDBC exceptions and translates them to the generic, more informative, exception hierarchy defined in the org.springframework.dao package. 
+
+
+
+The NamedParameterJdbcTemplate class wraps a JdbcTemplate and delegates to the wrapped JdbcTemplate to do much of its work.    <br/>
+ The NamedParameterJdbcTemplate class wraps a classic JdbcTemplate template. If you need access to the wrapped JdbcTemplate instance to access functionality that is present only in the JdbcTemplate class, you can use thegetJdbcOperations() method to access the wrapped JdbcTemplate through the JdbcOperations interface.
+
+
+
+Controlling Database Connections    <br/>
+在spring中，常用的连接池有：jdbc,dbcp,c3p0,JNDI4种，他们有不同的优缺点和适用场景
+
+Spring obtains a connection to the database through a DataSource. A DataSource is part of the JDBC specification and is a generalized connection factory. It lets a container or a framework hide connection pooling and transaction management issues from the application code. As a developer, you need not know details about how to connect to the database. That is the responsibility of the administrator who sets up the datasource. You most likely fill both roles as you develop and test code, but you do not necessarily have to know how the production data source is configured.
+
+
+When you use Spring’s JDBC layer, you can obtain a data source from JNDI, or you can configure your own with a connection pool implementation provided by a third party. Popular implementations are Apache Jakarta Commons DBCP and C3P0. Implementations in the Spring distribution are meant only for testing purposes and do not provide pooling.
+
+
+You should use the DriverManagerDataSource class only for testing purposes, since it does not provide pooling and performs poorly when multiple requests for a connection are made.
+
+
+Todo Spring-jdbc:    <br/>
+Controlling Database Connections    <br/>
+Using SQLExceptionTranslator    <br/>
+管理数据库资源:连接 提交 异常    <br/>
+模板模式
+
+## 2019-08-13
+
+**URL**   <br/>
+URL is an acronym for Uniform Resource Locator and is a reference (an address) to a resource on the Internet.   <br/>
+URLs are "write-once" objects. Once you've created a URL object, you cannot change any of its attributes (protocol, host name, filename, or port number).
+
+https://docs.oracle.com/javase/tutorial/networking/urls/index.html
+http://web.archive.org/web/20051219043731/http://archive.ncsa.uiuc.edu/SDG/Software/Mosaic/Demo/url-primer.html
+https://www.geeksforgeeks.org/url-class-java-examples/
+https://webmasters.stackexchange.com/questions/19101/what-is-the-difference-between-a-uri-and-a-url
+https://stackoverflow.com/questions/176264/what-is-the-difference-between-a-uri-a-url-and-a-urn
+
+
+
+
+**Class-loader and Class-Path**     <br/>
+https://www.geeksforgeeks.org/classloader-in-java/
+https://www.oracle.com/technetwork/articles/java/classloaders-140370.html
+https://docs.oracle.com/javase/tutorial/ext/basics/load.html
+https://docs.oracle.com/javase/tutorial/ext/basics/index.html
+https://stackoverflow.com/questions/2424604/what-is-a-java-classloader
+
+
+A bootstrap class loader that is built into the JVM is responsible for loading the classes of the Java runtime. This class loader only loads classes that are found in the boot classpath, and since these are trusted classes, the validation process is not performed as for untrusted classes. In addition to the bootstrap class loader, the JVM has an extension class loader responsible for loading classes from standard extension APIs, and a system class loader that loads classes from a general class path as well as your application classes.
+
+
+Since there is more than one class loader, they are represented in a tree whose root is the bootstrap class loader. Each class loader has a reference to its parent class loader. When a class loader is asked to load a class, it consults its parent class loader before attempting to load the item itself. The parent in turn consults its parent, and so on. So it is only after all the ancestor class loaders cannot find the class that the current class loader gets involved. In other words, a delegation model is used.
+
+
+When the runtime environment needs to load a new class for an application, it looks for the class in the following locations, in order:   <br/>
+ 1.Bootstrap classes: the runtime classes in rt.jar, internationalization classes in i18n.jar, and others.   <br/>
+ 2.Installed extensions: classes in JAR files in the lib/ext directory of the JRE, and in the system-wide, platform-specific extension directory (such as /usr/jdk/packages/lib/ext on the Solaris™ Operating System, but note that use of this directory applies only to Java™ 6 and later).   <br/>
+ 3.The class path: classes, including classes in JAR files, on paths specified by the system property java.class.path. If a JAR file on the class path has a manifest with the Class-Path attribute, JAR files specified by the Class-Path attribute will be searched also. By default, the java.class.path property's value is ., the current directory. You can change the value by using the -classpath or -cp command-line options, or setting the CLASSPATH environment variable. The command-line options override the setting of the CLASSPATH environment variable.
+
+
+
+Option:	-verbose:class
+Option:	-Djava.security.manager
+System.out.println("boot:"+System.getProperty("sun.boot.class.path"));
+System.out.println("ext:"+System.getProperty("java.ext.dirs"));
+System.out.println("app:"+System.getProperty("java.class.path"));
+
+
+选项-verbose:class打印class被加载的日志    <br/>
+java -verbose:class  HelloApp
 
 
 ## 2019-08-12

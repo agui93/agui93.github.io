@@ -1,6 +1,35 @@
 - 目录
 {:toc #markdown-toc}	
 
+
+
+## 2019-08-12
+
+动态代理:JDK 和CGLIB，Javassist，ASM <br/>
+https://blog.csdn.net/luanlouis/article/details/24589193
+代理模式
+
+ASM 是一个 Java 字节码操控框架。它能够以二进制形式修改已有类或者动态生成类。ASM 可以直接产生二进制 class 文件，也可以在类被加载入 Java 虚拟机之前动态改变类行为。ASM 从类文件中读入信息后，能够改变类行为，分析类信息，甚至能够根据用户要求生成新类。
+
+不过ASM在创建class字节码的过程中，操纵的级别是底层JVM的汇编指令级别，这要求ASM使用者要对class组织结构和JVM汇编指令有一定的了解。
+
+
+Javassist是一个开源的分析、编辑和创建Java字节码的类库。直接使用java编码的形式，而不需要了解虚拟机指令，就能动态改变类的结构，或者动态生成类。
+
+
+JDK通过 java.lang.reflect.Proxy包来支持动态代理, InvocationHandler <br/>
+JDK提供了sun.misc.ProxyGenerator.generateProxyClass(String proxyName,class[] interfaces) 底层方法来产生动态代理类的字节码：<br/>
+JDK中提供的生成动态代理类的机制有个鲜明的特点是： 某个类必须有实现的接口，而生成的代理类也只能代理某个类接口定义的方法
+
+
+cglib（Code Generation Library) 生成动态代理类的机制----通过类继承,以在运行期扩展Java类与实现Java接口.
+
+cglib 创建某个类A的动态代理类的模式是： <br/>
+	1.   查找A上的所有非final 的public类型的方法定义；<br/>
+	2.   将这些方法的定义转换成字节码；<br/>
+	3.   将组成的字节码转换成相应的代理的class对象；<br/>
+	4.   实现 MethodInterceptor接口，用来处理 对代理类上所有方法的请求（这个接口和JDK动态代理InvocationHandler的功能和角色是一样的）
+
 ## 2019-08-05
 JMX <br/>
 https://docs.oracle.com/javase/tutorial/jmx/index.html <br/>

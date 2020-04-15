@@ -7,7 +7,7 @@
 [Daily Record]({{ site.baseurl }}/documents/everyday_tech_record)
 
 ## Own
-- [sun.misc.Unsafe]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_unsafe)
+- [sun.misc.Unsafe]({{ site.baseurl }}/documents/øønotes/agui_self_analyze/java_unsafe)
 - [JMM 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_jmm)
 - [java wait notivication 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_wait_notification) 
 - [LockSupport 分析]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_locksupport)

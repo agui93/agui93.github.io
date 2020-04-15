@@ -1,24 +1,18 @@
-## Purpose
+- 目录
+{:toc #markdown-toc}	
 
-  - 将理解的东西解释出来以加深理解  
-  - 笔记记录
-  - 知识体系建设
+## 体系
+  
+   - ![java技术栈]({{ site.baseurl }}/imgs/stack/java_stack.jpeg)
 
   
-## Links
   
-  涉及的方面,统计整理中(todo)  
   
-  - 整理的Books
-  - Java
-  - Redis
-  - Zookeeper
-  - MongoDb
-  - Mysql
-  - Linux
-  - Docker
-  - Netty
-  - Algorithm
+  
+## 分类
+
+  - [网络]({{ site.baseurl }}/documents/network/network_index)
+  - [临时文档]({{ site.baseurl }}/documents/notes/notes_index)
   
   
   

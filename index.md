@@ -13,7 +13,15 @@
 
   - [网络]({{ site.baseurl }}/documents/network/network_index)
   - [临时文档]({{ site.baseurl }}/documents/notes/notes_index)
-  
+  - Mysql
+  - Algs
+  - C
+  - Redis
+  - Mongo
+  - Nginx
+  - Java
+     - Thread
+     - JVM
   
   
 

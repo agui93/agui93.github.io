@@ -3,7 +3,7 @@
 
 # 笔记
 
-## Footprint
+## 待整理
 [Daily Record]({{ site.baseurl }}/documents/everyday_tech_record)
 
 ## Own
@@ -21,11 +21,10 @@
 - [Servlet]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_servlet)
 - [Java™ Tutorials]({{ site.baseurl }}/documents/notes/agui_self_analyze/java_tutorials)
 
-## Data Structure and Algorithms
+## 待整理算法
 - [数据结构和算法]({{ site.baseurl }}/documents/notes/data_structure_and_algorithms/data_structure_and_algorithms_entry)
 
-## Mysql
-- [Mysql Entry]({{ site.baseurl }}/documents/notes/mysql/mysql_entry)
+
 
 ## C Primer Plus
 - [C++ Entry]({{ site.baseurl }}/documents/notes/c_primer_plus/c_primer_plus_entry)

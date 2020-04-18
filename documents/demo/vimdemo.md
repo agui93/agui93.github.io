@@ -1,4 +1,9 @@
-##vimrc 
+- 目录
+{:toc #markdown-toc}	
+
+# Vim
+
+## vimrc 
 ```
 let mapleader=";"
 inoremap <Leader>jk <esc>

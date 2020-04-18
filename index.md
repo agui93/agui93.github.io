@@ -1,13 +1,11 @@
 - 目录
 {:toc #markdown-toc}	
 
-## 体系
+## Tech
   
-   - ![java技术栈]({{ site.baseurl }}/imgs/stack/java_stack.jpeg)
+   - [技术栈]({{ site.baseurl }}/documents/stack/stack_index)
 
-  
-  
-  
+
   
 ## 分类
 

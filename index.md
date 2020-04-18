@@ -11,18 +11,20 @@
   
 ## 分类
 
-  - [网络]({{ site.baseurl }}/documents/network/network_index)
   - [临时文档]({{ site.baseurl }}/documents/notes/notes_index)
-  - Mysql
-  - Algs
-  - C
+  - [网络]({{ site.baseurl }}/documents/network/network_index)
+  - [C]({{ site.baseurl }}/documents/c/c_index)
+  - [C++]({{ site.baseurl }}/documents/c_plus_plus/c_plus_plus_index)
+  - [Flink]({{ site.baseurl }}/documents/flink/flink)
+  - [Java]({{ site.baseurl }}/documents/java/java_index)
+  - [Mysql]({{ site.baseurl }}/documents/mysql/mysql_index)
+  - [Algs]({{ site.baseurl }}/documents/algs/algs_index)
   - Redis
   - Mongo
   - Nginx
-  - Java
-     - Thread
-     - JVM
-  - Flink({{ site.baseurl }}/documents/flink)
+
+  
+  
   
   
 

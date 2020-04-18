@@ -3,6 +3,44 @@
 
 # JAVA
 
+  
+
+
+
+
+## 并发
+
+-  JMM
+-  volatile && synchronized
+-  Thread && Object
+-  LockSupport
+-  AQS
+-  Lock
+-  Atomic
+-  Execcutor框架
+-  线程池
+-  工具类(Map Queue CountDownLatch CyclicBarrier Semaphore Exchanger)
+
+
+
+## Socket && NIO
+- 同步、异步、阻塞、非阻塞
+- Buffer
+- Channel
+- NetworkInterface
+- Socket
+- Selector
+- AIO
+
+
+
+
+## 泛型
+
+## 反射
+
+## 动态代理
+
 ## Own
 - [sun.misc.Unsafe]({{ site.baseurl }}/documents/java/java/java_unsafe)
 - [JMM 分析]({{ site.baseurl }}/documents/java/java/java_jmm)

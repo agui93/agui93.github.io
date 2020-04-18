@@ -42,8 +42,25 @@ An ideal tool for such real time use cases would be the one, which can input dat
 
 #  Ecosystem on Apache Flink
 
-   ![Flink Ecosystem]({{ site.baseurl }}/imgs/flink/ecosystem_on_apache_flink.jpeg)
+   ![Flink Ecosystem]({{ site.baseurl }}/imgs/flink/ecosystem_on_apache_flink.jpg)
+   
+**Kernel**: This is the runtime layer, which provides distributed processing, fault tolerance, reliability, native iterative processing capability and more.
+   
+**APIs & Libraries**:
+   This is the top layer and most important layer of Apache Flink. It has Dataset API, which takes care of batch processing, and Datastream API, which takes care of stream processing. There are other libraries like Flink ML (for machine learning), Gelly (for graph processing ), Tables for SQL. This layer provides diverse capabilities to Apache Flink.
 
   
+
+
+
+# Architecture
+Apache Flink Architecture.( Kappa architecture   vs Lambda architecture)
+
+Apache Flink job execution architecture.
+
+
+Features
+
+
 
 

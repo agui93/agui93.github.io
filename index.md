@@ -18,9 +18,9 @@
 
 ## 语言
   
+  - [Java]({{ site.baseurl }}/documents/java/java_index)
   - [C]({{ site.baseurl }}/documents/c/c_index)
   - [C++]({{ site.baseurl }}/documents/c_plus_plus/c_plus_plus_index)
-  - [Java]({{ site.baseurl }}/documents/java/java_index)
 
   
   
@@ -29,11 +29,18 @@
   - Spring  
   - SpringMvc
   - Netty
-  - Dubbo
-  - Kafka
-  - Zookeeper
   - Disruptor
+  - Dubbo
+  - Zookeeper
   - Nginx
+  - Kafka
+
+## 分布式
+ - 分布式网站
+ - 分布式服务
+ - 分布式存储
+ - 分布式缓存
+ - 分布式消息中间件
 
 
   
@@ -45,10 +52,8 @@
   
 
 
-
 ## BigData
   - [Flink]({{ site.baseurl }}/documents/flink/flink)
-
 
 
   
